@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart' show screenWidth;
-
+import 'package:teck_talk/ui/shared/shared_widget/utilies.dart'
+    show screenWidth;
 
 enum TextStyleType { TITLE, SUBTITLE, BODY, SMALL, CUSTOM }
 
@@ -23,43 +23,53 @@ class CustomText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text!,
-      style: getStyle(Get.size),
-    );
+    return Text(text!, style: getStyle(Get.size));
   }
-  TextStyle getStyle(Size size){
+
+  TextStyle getStyle(Size size) {
     TextStyle result = TextStyle();
-    switch(styleType){
+    switch (styleType) {
       case TextStyleType.TITLE:
         result = TextStyle(
-            fontSize: screenWidth(16),
-            fontWeight: fontWeight ?? FontWeight.bold,
-            color: textColor);
+          fontSize: screenWidth(10),
+          fontWeight: fontWeight ?? FontWeight.bold,
+          color: textColor,
+        );
         break;
       case TextStyleType.SUBTITLE:
         result = TextStyle(
-            fontSize: screenWidth(20),
-            fontWeight: fontWeight ?? FontWeight.normal,
-            color: textColor);
+          fontSize: screenWidth(15),
+          fontWeight: fontWeight ?? FontWeight.bold,
+          color: textColor,
+        );
         break;
       case TextStyleType.BODY:
         result = TextStyle(
-            fontSize: screenWidth(25),
-            fontWeight: fontWeight ?? FontWeight.w100,
-            color: textColor);
+          fontSize: screenWidth(25),
+          fontWeight: fontWeight ?? FontWeight.w400,
+          color: textColor,
+        );
         break;
       case TextStyleType.SMALL:
         result = TextStyle(
-            fontSize: screenWidth(30),
-            fontWeight: fontWeight ?? FontWeight.w200,
-            color: textColor);
+          fontSize: screenWidth(30),
+          fontWeight: fontWeight ?? FontWeight.w500,
+          color: textColor,
+        );
         break;
-        default:
+      case TextStyleType.CUSTOM:
         result = TextStyle(
-            fontSize: screenWidth(20),
-            fontWeight: FontWeight.normal,
-            color: textColor);
+          fontSize: fontSize,
+          fontWeight: fontWeight ?? FontWeight.w500,
+          color: textColor,
+        );
+        break;
+      default:
+        result = TextStyle(
+          fontSize: screenWidth(20),
+          fontWeight: FontWeight.normal,
+          color: textColor,
+        );
         break;
     }
     return result;

@@ -47,25 +47,29 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
           child: Column(
             children: [
               Spacer(),
-              RotationTransition(
-                turns: _controller,
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.white.withOpacity(0.4),
-                        blurRadius: 40,
-                        spreadRadius: 5,
-                      ),
-                    ],
-                  ),
-                  child: SvgPicture.asset(
-                    "assets/images/svg/Group.svg",
-                    width: screenWidth(5),
-                  ),
-                ),
+              // RotationTransition(
+              //   turns: _controller,
+              //   child: Container(
+              //     padding: const EdgeInsets.all(20),
+              //     decoration: BoxDecoration(
+              //       shape: BoxShape.circle,
+              //       boxShadow: [
+              //         BoxShadow(
+              //           color: Colors.white.withOpacity(0.4),
+              //           blurRadius: 40,
+              //           spreadRadius: 5,
+              //         ),
+              //       ],
+              //     ),
+              //     child: SvgPicture.asset(
+              //       "assets/images/svg/logo.svg",
+              //       width: screenWidth(5),
+              //     ),
+              //   ),
+              // ),
+              SvgPicture.asset(
+                "assets/images/svg/logo.svg",
+                width: screenWidth(5),
               ),
               SizedBox(height: screenWidth(20)),
               CustomText(text: "Teck talk", styleType: TextStyleType.TITLE),
