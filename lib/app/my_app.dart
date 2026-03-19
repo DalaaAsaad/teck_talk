@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:teck_talk/ui/views/main_view/main_view.dart';
 import 'package:teck_talk/ui/views/splash/splash.dart';
 
 class MyApp extends StatelessWidget {
@@ -7,6 +8,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(debugShowCheckedModeBanner: false, home: Splash());
+    return GetMaterialApp(debugShowCheckedModeBanner: false, home: MainView());
   }
 }
