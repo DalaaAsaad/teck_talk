@@ -1,0 +1,4 @@
+enum CodeViewMode {
+  view,
+  input,
+}

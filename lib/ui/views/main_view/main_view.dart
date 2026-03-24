@@ -24,6 +24,7 @@ class _MainViewState extends State<MainView> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          actionsPadding: EdgeInsets.all(screenWidth(50)),
           backgroundColor: Appcolor.black_08,
           elevation: 0,
           title: Row(
@@ -46,68 +47,64 @@ class _MainViewState extends State<MainView> {
               ),
               onPressed: () {},
             ),
-
-            IconButton(
-              icon: Icon(
-                Icons.menu,
-                size: screenWidth(10),
-                color: Appcolor.white,
-              ),
-              onPressed: () {},
-            ),
           ],
         ),
         backgroundColor: Appcolor.black_08,
-        body: body[_current_index],
-
-        bottomNavigationBar: Column(
-          mainAxisSize: MainAxisSize.min,
+        body: Stack(
           children: [
-            Container(
-              height: screenWidth(300),
+            body[_current_index],
 
-              color: Appcolor.white.withValues(alpha: 0.2),
-            ),
-            BottomNavigationBar(
-              enableFeedback: false,
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: Appcolor.black_08,
-
-              selectedItemColor: Appcolor.yellow_70,
-              unselectedItemColor: Appcolor.white,
-
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-
-              currentIndex: _current_index,
-              onTap: (value) {
-                setState(() {
-                  _current_index = value;
-                });
-              },
-
-              items: [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home, size: screenWidth(10)),
-                  label: "",
+            Positioned(
+              bottom: screenWidth(70),
+              left: screenWidth(70),
+              right: screenWidth(100),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Appcolor.Black_05,
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.article, size: screenWidth(10)),
-                  label: "",
+                child: BottomNavigationBar(
+                  enableFeedback: false,
+                  type: BottomNavigationBarType.fixed,
+                  backgroundColor: Colors.transparent,
+                  selectedItemColor: Appcolor.yellow_70,
+                  unselectedItemColor: Appcolor.white,
+                  showSelectedLabels: false,
+                  showUnselectedLabels: false,
+                  currentIndex: _current_index,
+                  onTap: (value) {
+                    setState(() {
+                      _current_index = value;
+                    });
+                  },
+                  items: [
+                    BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.article),
+                      label: "",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.add_circle_outline),
+                      label: "",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.search),
+                      label: "",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.account_circle),
+                      label: "",
+                    ),
+                  ],
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.add_circle_outline, size: screenWidth(10)),
-                  label: "",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.search, size: screenWidth(10)),
-                  label: "",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle, size: screenWidth(10)),
-                  label: "",
-                ),
-              ],
+              ),
             ),
           ],
         ),
