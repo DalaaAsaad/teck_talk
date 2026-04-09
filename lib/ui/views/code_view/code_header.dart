@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/ui/views/main_view/code_view/code_model.dart';
+import 'package:teck_talk/ui/views/code_view/code_model.dart';
 import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
@@ -51,8 +51,8 @@ class CodeHeader extends StatelessWidget {
 
             if (mode == CodeViewMode.input)
               IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.add_box_outlined, color: Appcolor.yellow_70),
+                onPressed: () {},
+                icon: Icon(Icons.terminal, color: Appcolor.yellow_70),
               ),
 
             if (isDialog)

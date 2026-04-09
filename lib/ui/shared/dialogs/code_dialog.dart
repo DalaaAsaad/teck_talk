@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:teck_talk/ui/views/code_view/code_view.dart';
 
 class CodeDialog extends StatelessWidget {
-  final Widget codeView;
+  final CodeView codeView;
 
   const CodeDialog({super.key, required this.codeView});
 

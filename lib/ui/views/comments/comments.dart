@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/ui/views/main_view/code_view/code_model.dart';
+import 'package:teck_talk/ui/views/code_view/code_model.dart';
 import 'package:teck_talk/ui/shared/custom_widget/active_icon.dart';
-import 'package:teck_talk/ui/views/main_view/code_view/code_view.dart';
+import 'package:teck_talk/ui/views/code_view/code_view.dart';
 import 'package:teck_talk/ui/shared/custom_widget/comment_card.dart';
 import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
@@ -25,6 +25,7 @@ class Comments extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsetsDirectional.only(
+                top: screenWidth(15),
                 start: screenWidth(20),
                 end: screenWidth(10),
               ),
@@ -61,7 +62,7 @@ class Comments extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  SizedBox(height: screenWidth(20)),
+                  SizedBox(height: screenWidth(100)),
                   ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),

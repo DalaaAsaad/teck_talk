@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
 
-class UserInfo extends StatelessWidget {
+class UsetInfoHeader extends StatelessWidget {
   final String nameProfile;
-  final String history;
-  final String imagePath;
-  const UserInfo({super.key, required this.nameProfile, required this.history, required this.imagePath});
+  final String imageProfile;
+  final String date;
+  const UsetInfoHeader({
+    super.key,
+    required this.nameProfile,
+    required this.date,
+    required this.imageProfile,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,7 @@ class UserInfo extends StatelessWidget {
         CircleAvatar(
           radius: screenWidth(15),
           child: Image.asset(
-            "assets/images/png/profile.png",
+            imageProfile,
             width: double.infinity,
             fit: BoxFit.cover,
           ),
@@ -31,7 +36,7 @@ class UserInfo extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
             CustomText(
-              text: history,
+              text: date,
               styleType: TextStyleType.CUSTOM,
               fontSize: screenWidth(25),
               fontWeight: FontWeight.w200,

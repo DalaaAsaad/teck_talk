@@ -31,7 +31,7 @@ class CustomText extends StatelessWidget {
     switch (styleType) {
       case TextStyleType.TITLE:
         result = TextStyle(
-          fontSize: screenWidth(10),
+          fontSize: screenWidth(15),
           fontWeight: fontWeight ?? FontWeight.bold,
           color: textColor,
         );

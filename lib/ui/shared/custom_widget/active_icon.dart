@@ -7,7 +7,7 @@ import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
 
 class ActiveIcon extends StatelessWidget {
   final Icon icon;
-  final Icon iconIsActive ;
+  final Icon iconIsActive;
   final Color color;
   final String numOfInteractors;
   final RxBool isActive;
@@ -15,7 +15,7 @@ class ActiveIcon extends StatelessWidget {
   ActiveIcon({
     super.key,
     required this.icon,
-    required this.iconIsActive ,
+    required this.iconIsActive,
     required this.numOfInteractors,
     required this.color,
     required this.isActive,

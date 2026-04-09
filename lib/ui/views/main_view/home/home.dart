@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/ui/views/main_view/code_view/code_model.dart';
-import 'package:teck_talk/ui/views/main_view/code_view/code_view.dart';
+import 'package:teck_talk/core/models/post_model.dart';
 import 'package:teck_talk/ui/shared/custom_widget/iconwithtitle.dart';
-import 'package:teck_talk/ui/shared/custom_widget/post_card.dart' show PostCard;
-
+import 'package:teck_talk/ui/views/compiler/compiler.dart';
+import 'package:teck_talk/ui/views/main_view/home/post_card.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:teck_talk/ui/views/compiler/compiler.dart';
-import 'package:teck_talk/ui/shared/dialogs/code_dialog.dart';
-
-import 'package:teck_talk/ui/views/main_view/home/homecontroller.dart';
+import 'package:teck_talk/controllers/homecontroller.dart';
 import 'package:teck_talk/ui/views/roadmaps/roadmaps.dart';
 import 'package:teck_talk/ui/views/uml_design/uml_design.dart';
 
@@ -22,87 +19,152 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Homecontroller controller = Get.put(Homecontroller());
+  final Homecontroller controller = Get.find();
+
+  List<PostModel> posts = [
+    PostModel(
+      imageProfile: "assets/images/png/profile.png",
+
+      nameProfile: "Ahmad Hassan",
+      date: "2 day",
+      textPost:
+          "What's wrong with this code? Getting an error and can't figure out why 🤔",
+      numFav: 2500,
+      numComment: 300,
+      numSaved: 12,
+      tags: ["front End", "back End"],
+      images: [
+        "assets/images/png/imageTest.png",
+        "assets/images/png/blog_image.png",
+      ],
+    ),
+    PostModel(
+      imageProfile: "assets/images/png/profile.png",
+
+      nameProfile: "Ahmad Hassan",
+      date: "2 day",
+      textPost:
+          "What's wrong with this code? Getting an error and can't figure out why 🤔",
+      numFav: 2500,
+      numComment: 300,
+      numSaved: 12,
+      tags: ["front End", "back End"],
+      images: [],
+    ),
+    PostModel(
+      imageProfile: "assets/images/png/profile.png",
+
+      nameProfile: "Ahmad Hassan",
+      date: "2 day",
+      textPost:
+          "What's wrong with this code? Getting an error and can't figure out why 🤔",
+      numFav: 2500,
+      numComment: 300,
+      numSaved: 12,
+      tags: ["front End", "back End"],
+      images: [
+        "assets/images/png/imageTest.png",
+        "assets/images/png/blog_image.png",
+      ],
+      code: """public class Main {
+    public static void main(String[] args) {
+        // طباعة رسالة ترحيبية
+        System.out.println("مرحبا بك في برنامج الحساب!");
+
+        // تعريف رقمين
+        int a = 5;
+        int b = 7;
+
+        // حساب المجموع
+        int sum = a + b;
+
+        // عرض النتيجة
+        System.out.println("مجموع " + a + " و " + b + " = " + sum);
+    }
+}""",
+      codeLanguage: "java",
+    ),
+    PostModel(
+      imageProfile: "assets/images/png/profile.png",
+
+      nameProfile: "Ahmad Hassan",
+      date: "2 day",
+      textPost:
+          "What's wrong with this code? Getting an error and can't figure out why 🤔",
+      numFav: 2500,
+      numComment: 300,
+      numSaved: 12,
+      tags: ["front End", "back End"],
+      images: [],
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Appcolor.black_08,
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          SizedBox(height: screenWidth(20)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconWithTitle(
+    return Scaffold(
+      backgroundColor: Appcolor.black_08,
+      floatingActionButton: Padding(
+        padding: EdgeInsetsDirectional.only(bottom: screenWidth(5)),
+        child: SpeedDial(
+          foregroundColor: Appcolor.black_08,
+          overlayColor: Appcolor.black_08,
+          overlayOpacity: 0.6,
+          icon: Icons.add,
+          activeIcon: Icons.close,
+          backgroundColor: Appcolor.yellow_70,
+          children: [
+            SpeedDialChild(
+              backgroundColor: Appcolor.yellow_70,
+              child: Image.asset("assets/images/png/chatBot.png"),
+            ),
+            SpeedDialChild(
+              backgroundColor: Appcolor.yellow_70,
+              child: IconWithTitle(
                 svgPath: "assets/images/svg/compilerIcon.svg",
-                title: "code Compiler",
+                // title: "code Compiler",
                 onTap: () {
                   Get.to(() => Compiler());
                 },
               ),
-              IconWithTitle(
+            ),
+
+            SpeedDialChild(
+              backgroundColor: Appcolor.yellow_70,
+              child: IconWithTitle(
                 svgPath: "assets/images/svg/roadmapIcon.svg",
-                title: "Roadmaps",
                 onTap: () {
                   Get.to(Roadmaps());
                 },
               ),
-              IconWithTitle(
+            ),
+            SpeedDialChild(
+              backgroundColor: Appcolor.yellow_70,
+              child: IconWithTitle(
                 svgPath: "assets/images/svg/umlIcon.svg",
-                title: "UML Designer",
                 onTap: () {
                   Get.to(UmlDesign());
                 },
               ),
-            ],
-          ),
-
-          Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: screenWidth(20),
-              vertical: screenWidth(20),
             ),
-            height: screenWidth(300),
-            color: Appcolor.white,
-          ),
+          ],
+        ),
+      ),
+      body: Container(
+        color: Appcolor.black_08,
+        child: ListView.builder(
+          padding: EdgeInsets.only(bottom: screenWidth(6)),
+          itemCount: posts.length,
+          itemBuilder: (context, index) {
+            return PostCard(
+              post: posts[index],
+              onFavorite: () => controller.toggleFavorite(posts[index]),
 
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 3,
-            itemBuilder: (context, index) {
-              return PostCard(
-                controller: controller,
-                nameProfile: "Jhon Techson",
-                history: "5 day",
-                onTap: () {
-                  Get.dialog(
-                    Dialog(
-                      child: CodeView(
-                        mode: CodeViewMode.view,
-                        isdialog: true,
-                        code: 'hello world!',
-                      ),
-                    ),
-                  );
-                  // Get.dialog(
-                  //   CodeDialog(
-                  //     codeContainer: CodeView(code: "hello world", isClose: true, isCopy: true),
-                  //   ),
-                  // );
-                },
-                textPost:
-                    "What's wrong with this code? Getting an error and can't figure out why 🤔",
-                numfav: '25.6k',
-                numComment: '25.6k',
-                numSaved: '25.6k',
-              );
-            },
-          ),
-          SizedBox(height: screenWidth(5)),
-        ],
+              onComment: () => controller.toggleComment(posts[index]),
+
+              onSaved: () => controller.toggleSaved(posts[index]),
+            );
+          },
+        ),
       ),
     );
   }

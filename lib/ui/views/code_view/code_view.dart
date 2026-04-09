@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github-gist.dart';
-import 'package:get/get.dart';
-import 'package:teck_talk/ui/views/main_view/code_view/code_header.dart';
-import 'package:teck_talk/ui/views/main_view/code_view/code_model.dart';
-import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
+import 'package:teck_talk/ui/views/code_view/code_header.dart';
+import 'package:teck_talk/ui/views/code_view/code_model.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
 
 class CodeView extends StatefulWidget {
   final String? code;
+  final String? languageCode;
   final CodeViewMode mode;
   final bool isdialog;
 
@@ -19,6 +18,7 @@ class CodeView extends StatefulWidget {
     required this.code,
     required this.mode,
     this.isdialog = false,
+    this.languageCode,
   });
 
   @override
@@ -72,7 +72,7 @@ class _CodeViewState extends State<CodeView> {
                   scrollDirection: Axis.horizontal,
                   child: HighlightView(
                     widget.code ?? "",
-                    language: 'dart',
+                    language: widget.languageCode ?? "",
                     theme: githubGistTheme,
                     padding: EdgeInsets.all(screenWidth(30)),
                     textStyle: TextStyle(fontFamily: 'monospace', fontSize: 14),

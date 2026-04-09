@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:teck_talk/ui/views/main_view/code_view/code_model.dart';
+import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
+import 'package:teck_talk/ui/views/code_view/code_model.dart';
 import 'package:teck_talk/ui/shared/custom_widget/active_icon.dart';
-import 'package:teck_talk/ui/views/main_view/code_view/code_view.dart';
-import 'package:teck_talk/ui/shared/custom_widget/text_post.dart';
-import 'package:teck_talk/ui/shared/custom_widget/user_info.dart';
+import 'package:teck_talk/ui/views/code_view/code_view.dart';
+
+import 'package:teck_talk/ui/shared/custom_widget/user-info_header.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
 import 'package:teck_talk/ui/views/comments/comments_controller.dart';
@@ -36,15 +37,25 @@ class CommentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(screenWidth(40)),
+      margin: EdgeInsets.all(screenWidth(60)),
       child: Column(
         children: [
-          UserInfo(
+          UsetInfoHeader(
             nameProfile: nameProfile,
-            history: history,
-            imagePath: imagePath,
+            date: history,
+            imageProfile: imagePath,
           ),
-          TextPost(textPost: textcomment),
+          Container(
+            width: double.infinity,
+            margin: EdgeInsetsDirectional.only(top: screenWidth(41)),
+            padding: EdgeInsetsDirectional.all(screenWidth(41)),
+            child: CustomText(
+              text: textcomment,
+              styleType: TextStyleType.BODY,
+              textColor: Appcolor.white.withAlpha(200),
+            ),
+          ),
+
           if (code != null && code!.trim().isNotEmpty)
             CodeView(mode: CodeViewMode.view, isdialog: false, code: code),
 
