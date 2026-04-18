@@ -26,6 +26,7 @@ class CreateBlog extends GetView<CreateBlogController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TopBar(),
+              SizedBox(height: screenWidth(sectionSpacing)),
             ProfileSection(),
             SizedBox(height: screenWidth(sectionSpacing)),
             ContentInput(),

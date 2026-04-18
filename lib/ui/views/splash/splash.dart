@@ -74,7 +74,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                 ),
               ),
               SizedBox(height: screenWidth(20)),
-              CustomText(text: "Teck talk", styleType: TextStyleType.TITLE),
+              CustomText(text: "Tech Talk", styleType: TextStyleType.TITLE),
               Padding(
                 padding: EdgeInsetsDirectional.only(
                   bottom: screenWidth(10),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/core/models/post_model.dart';
+import 'package:teck_talk/core/data/models/post_model.dart';
 import 'package:teck_talk/ui/shared/custom_widget/iconwithtitle.dart';
 import 'package:teck_talk/ui/views/compiler/compiler.dart';
 import 'package:teck_talk/ui/views/main_view/home/post_card.dart';

@@ -3,6 +3,8 @@ import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
 
+enum ProfileMenuAction { activity, settings, logout }
+
 class Profile extends StatefulWidget {
   const Profile({super.key});
 
@@ -11,6 +13,20 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  void _onMenuSelected(ProfileMenuAction action) {
+    switch (action) {
+      case ProfileMenuAction.activity:
+        // TODO: connect to activity screen
+        break;
+      case ProfileMenuAction.settings:
+        // TODO: connect to settings screen
+        break;
+      case ProfileMenuAction.logout:
+        // TODO: connect to logout flow
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -34,7 +50,49 @@ class _ProfileState extends State<Profile> {
                             fontSize: screenWidth(20),
                             fontWeight: FontWeight.w300,
                           ),
-                          Icon(Icons.more_vert, color: Appcolor.gray_95),
+                          Theme(
+                            data: Theme.of(context).copyWith(
+                              popupMenuTheme: PopupMenuThemeData(
+                                color: const Color(0xFF2B2B2B),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                              ),
+                            ),
+                            child: PopupMenuButton<ProfileMenuAction>(
+                              color: Appcolor.dark_20,
+                              onSelected: _onMenuSelected,
+                              icon: Icon(
+                                Icons.more_vert,
+                                color: Appcolor.gray_95,
+                              ),
+                              elevation: 8,
+                              position: PopupMenuPosition.under,
+                              itemBuilder: (context) => [
+                                PopupMenuItem<ProfileMenuAction>(
+                                  value: ProfileMenuAction.activity,
+                                  child: _MenuItemRow(
+                                    icon: Icons.timeline,
+                                    label: 'My Activity',
+                                  ),
+                                ),
+                                PopupMenuItem<ProfileMenuAction>(
+                                  value: ProfileMenuAction.settings,
+                                  child: _MenuItemRow(
+                                    icon: Icons.settings,
+                                    label: 'Settings',
+                                  ),
+                                ),
+                                PopupMenuItem<ProfileMenuAction>(
+                                  value: ProfileMenuAction.logout,
+                                  child: _MenuItemRow(
+                                    icon: Icons.logout,
+                                    label: 'Log Out',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(height: screenWidth(40)),
@@ -43,10 +101,8 @@ class _ProfileState extends State<Profile> {
                         children: [
                           CircleAvatar(
                             radius: screenWidth(10),
-                            child: Image.asset(
+                            backgroundImage: const AssetImage(
                               "assets/images/png/profile.png",
-                              width: double.infinity,
-                              fit: BoxFit.cover,
                             ),
                           ),
                           Column(
@@ -182,15 +238,38 @@ class _ProfileState extends State<Profile> {
   }
 }
 
+class _MenuItemRow extends StatelessWidget {
+  const _MenuItemRow({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, color: Appcolor.yellow_70, size: 18),
+        SizedBox(width: screenWidth(45)),
+        CustomText(
+          text: label,
+          styleType: TextStyleType.BODY,
+          textColor: Appcolor.white,
+        ),
+      ],
+    );
+  }
+}
+
 Widget xpBar() {
   double currentXP = 8644;
   double maxXP = 10000;
 
-  double progress = currentXP / maxXP;
+  final double progress = (currentXP / maxXP).clamp(0.0, 1.0);
 
   return LayoutBuilder(
     builder: (context, constraints) {
-      double width = constraints.maxWidth;
+      final double width = constraints.maxWidth;
+      final double labelLeft = ((width * progress) - 20).clamp(0.0, width - 56);
 
       return Column(
         children: [
@@ -199,7 +278,7 @@ Widget xpBar() {
             child: Stack(
               children: [
                 Positioned(
-                  left: (width * progress) - 20,
+                  left: labelLeft,
                   child: Text(
                     "${currentXP.toInt()} xp",
                     style: TextStyle(color: Colors.white, fontSize: 12),

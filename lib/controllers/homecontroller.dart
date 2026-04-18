@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:teck_talk/core/models/post_model.dart';
+import 'package:teck_talk/core/data/models/post_model.dart';
 import 'package:teck_talk/ui/views/comments/comments.dart';
 
 class Homecontroller extends GetxController {

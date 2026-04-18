@@ -1,0 +1,84 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:teck_talk/ui/shared/shared_widget/app_snackbar.dart';
+
+class SignupController extends GetxController {
+  late TextEditingController fullNameController;
+  late TextEditingController userNameController;
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  late TextEditingController confirmPasswordController;
+
+  final RxBool showPassword = false.obs;
+  final RxBool showConfirmPassword = false.obs;
+  final RxBool isLoading = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fullNameController = TextEditingController();
+    userNameController = TextEditingController();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    confirmPasswordController = TextEditingController();
+  }
+
+  @override
+  void onClose() {
+    fullNameController.dispose();
+    userNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.onClose();
+  }
+
+  void togglePasswordVisibility() {
+    showPassword.value = !showPassword.value;
+  }
+
+  void toggleConfirmPasswordVisibility() {
+    showConfirmPassword.value = !showConfirmPassword.value;
+  }
+
+  Future<void> signup() async {
+    if (!_validateForm()) {
+      return;
+    }
+
+    isLoading.value = true;
+    try {
+      await Future.delayed(const Duration(seconds: 2));
+      Get.back(result: true);
+    } catch (e) {
+      AppSnackBar.error('An error occurred');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  bool _validateForm() {
+    if (fullNameController.text.isEmpty) {
+      AppSnackBar.error('Full name is required');
+      return false;
+    }
+    if (userNameController.text.isEmpty) {
+      AppSnackBar.error('Username is required');
+      return false;
+    }
+    if (emailController.text.isEmpty ||
+        !GetUtils.isEmail(emailController.text)) {
+      AppSnackBar.error('Valid email is required');
+      return false;
+    }
+    if (passwordController.text.isEmpty || passwordController.text.length < 6) {
+      AppSnackBar.error('Password must be at least 6 characters');
+      return false;
+    }
+    if (passwordController.text != confirmPasswordController.text) {
+      AppSnackBar.error('Passwords do not match');
+      return false;
+    }
+    return true;
+  }
+}

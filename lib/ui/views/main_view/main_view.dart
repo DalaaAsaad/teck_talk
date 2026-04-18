@@ -38,7 +38,7 @@ class _MainViewState extends State<MainView> {
                 height: screenWidth(10),
               ),
               SizedBox(width: screenWidth(40)),
-              CustomText(text: "TeckTalk", styleType: TextStyleType.SUBTITLE),
+              CustomText(text: "Tech Talk", styleType: TextStyleType.SUBTITLE),
             ],
           ),
           actions: [

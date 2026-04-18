@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/core/models/post_model.dart';
+import 'package:teck_talk/core/data/models/post_model.dart';
 import 'package:teck_talk/ui/shared/custom_widget/active_icon.dart';
 import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart'
     show CustomText, TextStyleType;
@@ -33,8 +33,8 @@ class PostCard extends StatelessWidget {
     return Container(
       margin: EdgeInsetsDirectional.only(
         top: screenWidth(20),
-        start: screenWidth(20),
-        end: screenWidth(20),
+        start: screenWidth(50),
+        end: screenWidth(50),
       ),
       decoration: BoxDecoration(
         border: Border(

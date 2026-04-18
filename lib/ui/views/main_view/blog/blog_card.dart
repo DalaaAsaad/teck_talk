@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teck_talk/core/models/blog_model.dart';
+import 'package:teck_talk/core/data/models/blog_model.dart';
 import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:teck_talk/ui/shared/custom_widget/tag_widget.dart';
 import 'package:teck_talk/ui/shared/custom_widget/user-info_header.dart';

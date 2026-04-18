@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teck_talk/core/models/blog_model.dart';
+import 'package:teck_talk/core/data/models/blog_model.dart';
 import 'package:teck_talk/ui/views/main_view/blog/blog_card.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
