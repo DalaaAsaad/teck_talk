@@ -4,9 +4,9 @@ import 'package:teck_talk/controllers/search_controller.dart';
 import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:teck_talk/ui/views/main_view/home/post_card.dart';
+import 'package:teck_talk/ui/views/main_view/search/widgets/post_card_search.dart';
 
-class PostTab extends GetView<search_Controller> {
+class PostTab extends GetView<Search_Controller> {
   const PostTab({super.key});
 
   @override
@@ -14,7 +14,7 @@ class PostTab extends GetView<search_Controller> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildInlineFilters(),
+        // _buildInlineFilters(),
         Expanded(child: _buildPostsList()),
       ],
     );
@@ -22,9 +22,12 @@ class PostTab extends GetView<search_Controller> {
 
   Widget _buildPostsList() {
     return Obx(() {
-      final filteredPosts = controller.filteredPosts;
+      final filteredPosts = controller.posts;
 
-      if (filteredPosts.isEmpty) {
+      // Show "No posts found" only after loading completes and posts are empty
+      if (!controller.isLoading.value &&
+          filteredPosts.isEmpty &&
+          controller.isSearching) {
         return Center(
           child: CustomText(
             text: 'No posts found for this search',
@@ -38,7 +41,7 @@ class PostTab extends GetView<search_Controller> {
         padding: EdgeInsets.only(bottom: screenWidth(6)),
         itemCount: filteredPosts.length,
         itemBuilder: (context, index) {
-          return PostCard(
+          return PostCardSearch(
             post: filteredPosts[index],
             onFavorite: () {},
             onComment: () {},

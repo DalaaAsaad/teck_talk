@@ -111,7 +111,7 @@ class _IntroState extends State<Intro> {
                     bottom: screenWidth(7),
                   ),
                   child: InkWell(
-                    onTap: controller.navigateToMain,
+                    onTap: controller.navigateToSignin,
                     child: CustomText(
                       text: "skip",
                       fontSize: screenWidth(20),
@@ -258,7 +258,7 @@ class GetStartedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => InkWell(
-        onTap: controller.navigateToMain,
+        onTap: controller.navigateToSignin,
         onTapDown: (_) => controller.isPressed.value = true,
         onTapUp: (_) => controller.isPressed.value = false,
         onTapCancel: () => controller.isPressed.value = false,

@@ -58,16 +58,14 @@ class AppSnackBar {
       ),
       messageText: Padding(
         padding: EdgeInsetsDirectional.only(top: screenWidth(68.5)),
-        child: Expanded(
-          child: CustomText(
-            text: message,
-            styleType: TextStyleType.CUSTOM,
-            fontSize: screenWidth(25),
-            fontWeight: FontWeight.w500,
-          ),
+        child: CustomText(
+          text: message,
+          styleType: TextStyleType.CUSTOM,
+          fontSize: screenWidth(25),
+          fontWeight: FontWeight.w500,
         ),
       ),
-      snackPosition: SnackPosition.BOTTOM,
+      snackPosition: SnackPosition.TOP,
       snackStyle: SnackStyle.FLOATING,
       backgroundColor: Appcolor.gray_60.withAlpha(200),
       borderRadius: 18,

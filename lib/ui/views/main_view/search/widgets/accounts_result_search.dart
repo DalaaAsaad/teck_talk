@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teck_talk/core/data/models/accounts_model.dart';
+import 'package:teck_talk/core/data/models/user_general_model.dart';
 import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
@@ -7,7 +7,7 @@ import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
 class AccountsResultSearch extends StatelessWidget {
   const AccountsResultSearch({super.key, required this.account});
 
-  final AccountsModel account;
+  final UserGeneralModel account;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class AccountsResultSearch extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: screenWidth(15),
-            backgroundImage: AssetImage(account.imagePath),
+            backgroundImage: AssetImage(account.avatarUrl),
           ),
           SizedBox(width: screenWidth(35)),
           Expanded(

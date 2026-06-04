@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:teck_talk/controllers/blog_controller.dart';
 import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
 import 'package:teck_talk/ui/views/main_view/blog/blog.dart';
-import 'package:teck_talk/ui/views/main_view/create_blog/create_blog.dart';
+import 'package:teck_talk/ui/views/main_view/create_post/create_post.dart';
 import 'package:teck_talk/ui/views/main_view/home/home.dart';
 import 'package:teck_talk/ui/views/main_view/main_view_controller.dart';
 import 'package:teck_talk/ui/views/main_view/profile/profile.dart';
@@ -19,7 +20,8 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  List<Widget> body = [Home(), Blog(), CreateBlog(), Search(), Profile()];
+  List<Widget> body = [Home(), blog(), CreatePost(), Search(), Profile()];
+  final BlogController blogController = Get.put(BlogController());
   final controller = Get.put(MainViewController());
 
   @override
@@ -85,7 +87,7 @@ class _MainViewState extends State<MainView> {
                     showUnselectedLabels: false,
                     currentIndex: controller.currentIndex.value,
                     onTap: (value) {
-                      controller.currentIndex.value = value;
+                      controller.changeTab(value);
                     },
                     items: [
                       BottomNavigationBarItem(

@@ -1,90 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:teck_talk/core/data/models/blog_model.dart';
+import 'package:get/get.dart';
+import 'package:teck_talk/controllers/blog_controller.dart';
 import 'package:teck_talk/ui/views/main_view/blog/blog_card.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
 
-class Blog extends StatefulWidget {
-  const Blog({super.key});
+class blog extends GetView<BlogController> {
+  const blog({super.key});
 
-  @override
-  State<Blog> createState() => _BlogState();
-}
 
-class _BlogState extends State<Blog> {
-  List<BlogModel> Blogs = [
-    BlogModel(
-      nameProfile: "Hassan Ahmad",
-      imageProfile: "assets/images/png/profile.png",
-      date: '2 day',
-      titleBlog: "Docker for Beginners: Stop Struggling ",
-      textBlog:
-          "A step-by-step guide to containerize your first application without the headache...",
-      tags: ["Front End", "Problem"],
-      imageBlog: "assets/images/png/blog_image.png",
-    ),
-    BlogModel(
-      nameProfile: "Hassan Ahmad",
-      imageProfile: "assets/images/png/profile.png",
-      date: '2 day',
-      titleBlog: "Docker for Beginners: Stop Struggling ",
-      textBlog:
-          "A step-by-step guide to containerize your first application without the headache...",
-      tags: ["Front End", "Problem"],
-      imageBlog: "assets/images/png/blog_image.png",
-    ),
-    BlogModel(
-      nameProfile: "Hassan Ahmad",
-      imageProfile: "assets/images/png/profile.png",
-      date: '2 day',
-      titleBlog: "Docker for Beginners: Stop Struggling ",
-      textBlog:
-          "A step-by-step guide to containerize your first application without the headache...",
-      tags: ["Front End", "Problem"],
-      imageBlog: "assets/images/png/blog_image.png",
-    ),
-    BlogModel(
-      nameProfile: "Hassan Ahmad",
-      imageProfile: "assets/images/png/profile.png",
-      date: '2 day',
-      titleBlog: "Docker for Beginners: Stop Struggling ",
-      textBlog:
-          "A step-by-step guide to containerize your first application without the headache...",
-      tags: ["Front End", "Problem"],
-      imageBlog: "assets/images/png/blog_image.png",
-    ),
-    BlogModel(
-      nameProfile: "Hassan Ahmad",
-      imageProfile: "assets/images/png/profile.png",
-      date: '2 day',
-      titleBlog: "Docker for Beginners: Stop Struggling ",
-      textBlog:
-          "A step-by-step guide to containerize your first application without the headache...",
-      tags: ["Front End", "Problem"],
-      imageBlog: "assets/images/png/blog_image.png",
-    ),
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Appcolor.black_08,
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: Blogs.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {},
-                child: BlogCard(blog: Blogs[index]),
-              );
-            },
-          ),
-          SizedBox(height: screenWidth(5)),
-        ],
-      ),
+      child: Obx(() {
+        if (controller.isLoading.value) {
+          return Center(
+            child: CircularProgressIndicator(color: Appcolor.yellow_70),
+          );
+        }
+
+        if (controller.blogs.isEmpty) {
+          return Center(
+            child: Text(
+              'No blogs found',
+              style: TextStyle(color: Appcolor.white),
+            ),
+          );
+        }
+
+        return ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: controller.blogs.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {},
+                  child: BlogCard(blog: controller.blogs[index]),
+                );
+              },
+            ),
+            SizedBox(height: screenWidth(5)),
+          ],
+        );
+      }),
     );
   }
 }

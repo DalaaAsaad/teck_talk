@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:teck_talk/app/my_routs.dart';
 import 'package:teck_talk/controllers/signup_controller.dart';
 import 'package:teck_talk/ui/shared/custom_widget/auth_button.dart';
 import 'package:teck_talk/ui/shared/custom_widget/auth_header_section.dart';
+import 'package:teck_talk/ui/shared/custom_widget/auth_sign_link.dart';
 import 'package:teck_talk/ui/shared/custom_widget/auth_text_field.dart';
-import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
 
@@ -62,8 +63,11 @@ class SignupView extends GetView<SignupController> {
             onTap: controller.signup,
           ),
           SizedBox(height: screenWidth(16)),
-
-          _buildSigninLink(),
+          AuthSignLink(
+            questionText: 'You have an account?',
+            linkText: 'Sign in',
+            onTap: () => Get.toNamed(AppRoutes.signin),
+          ),
         ],
       ),
     );
@@ -137,33 +141,6 @@ class SignupView extends GetView<SignupController> {
                 ),
                 onPressed: controller.toggleConfirmPasswordVisibility,
               ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSigninLink() {
-    return Padding(
-      padding: EdgeInsetsDirectional.only(start: screenWidth(3)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          CustomText(
-            text: 'You have an account?',
-            styleType: TextStyleType.BODY,
-            textColor: Colors.grey[400],
-          ),
-
-          GestureDetector(
-            onTap: () {
-            
-            },
-            child: CustomText(
-              text: 'Sign in',
-              textColor: Appcolor.yellow_70,
-              fontWeight: FontWeight.bold,
             ),
           ),
         ],

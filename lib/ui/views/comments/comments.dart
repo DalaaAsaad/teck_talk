@@ -53,7 +53,7 @@ class Comments extends StatelessWidget {
                     iconIsActive: Icon(Icons.favorite),
                     numOfInteractors: "200 k",
                     color: Appcolor.red,
-                    isActive: controller.isFavorite,
+                    isActive: true,
                     function: controller.toggleFavorit,
                   ),
                 ],

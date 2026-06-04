@@ -5,7 +5,7 @@ import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
 
-class RecentSection extends GetView<search_Controller> {
+class RecentSection extends GetView<Search_Controller> {
   const RecentSection({super.key});
 
   @override

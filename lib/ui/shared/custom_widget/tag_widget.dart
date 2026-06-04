@@ -8,7 +8,6 @@ import 'package:teck_talk/ui/views/main_view/main_view_controller.dart';
 
 class TagWidget extends StatelessWidget {
   final String text;
-
   const TagWidget({required this.text, super.key});
 
   @override
@@ -17,8 +16,7 @@ class TagWidget extends StatelessWidget {
       onTap: () {
         final mainController = Get.find<MainViewController>();
         mainController.changeTab(3);
-
-        final searchController = Get.find<search_Controller>();
+        final searchController = Get.find<Search_Controller>();
         searchController.setSearchFromTag(text);
       },
       child: CustomText(

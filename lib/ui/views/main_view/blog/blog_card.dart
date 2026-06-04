@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:teck_talk/core/data/models/blog_model.dart';
+import 'package:get/get.dart';
+import 'package:teck_talk/core/data/responses/blogs_response.dart';
+
 import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:teck_talk/ui/shared/custom_widget/tag_widget.dart';
 import 'package:teck_talk/ui/shared/custom_widget/user-info_header.dart';
@@ -14,7 +16,9 @@ class BlogCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Get.offAllNamed('/blogView', arguments: blog.id);
+      },
       child: Container(
         margin: EdgeInsetsDirectional.only(
           top: screenWidth(50),
@@ -36,7 +40,7 @@ class BlogCard extends StatelessWidget {
             SizedBox(
               height: screenWidth(1.8),
               child: Image.asset(
-                blog.imageBlog,
+                blog.coverImageUrl ?? "assets/images/png/blog_image.png",
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -44,28 +48,29 @@ class BlogCard extends StatelessWidget {
             //* tags
             Wrap(
               spacing: 8,
-              children: blog.tags.map((e) => TagWidget(text: e)).toList(),
+              children: [
+                "flutter",
+                "Front End",
+              ].map((e) => TagWidget(text: e)).toList(),
             ),
             CustomText(
-              text: blog.titleBlog,
+              text: blog.title,
               styleType: TextStyleType.CUSTOM,
               fontSize: screenWidth(19),
               fontWeight: FontWeight.w600,
               textColor: Appcolor.white,
             ),
             CustomText(
-              text: blog.textBlog,
+              text: blog.subtitle,
               styleType: TextStyleType.BODY,
               textColor: Appcolor.white,
             ),
             SizedBox(height: screenWidth(40)),
             UsetInfoHeader(
-              nameProfile: blog.nameProfile,
-              date: blog.date,
-              imageProfile: blog.imageProfile,
+              nameProfile: "",
+              date: blog.createdAt,
+              imageProfile: "assets/images/png/profile.png",
             ),
-
-            // SizedBox(height: screenWidth(30)),
           ],
         ),
       ),

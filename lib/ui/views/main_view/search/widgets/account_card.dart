@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:teck_talk/core/data/models/accounts_model.dart';
+import 'package:teck_talk/core/data/models/user_general_model.dart';
 import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
 
 class AccountCard extends StatelessWidget {
-  final AccountsModel account;
+  final UserGeneralModel account;
   const AccountCard({super.key, required this.account});
 
   @override
@@ -21,7 +21,9 @@ class AccountCard extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: screenWidth(15),
-            backgroundImage: AssetImage(account.imagePath),
+            backgroundImage: NetworkImage(account.avatarUrl),
+            onBackgroundImageError: (_, __) {},
+            child: account.avatarUrl.isEmpty ? Icon(Icons.person) : null,
           ),
           SizedBox(width: screenWidth(35)),
           Expanded(

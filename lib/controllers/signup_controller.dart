@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:teck_talk/app/my_routs.dart';
+import 'package:teck_talk/core/data/repository/shared_pref.dart';
+import 'package:teck_talk/core/data/repository/auth_repository.dart';
 import 'package:teck_talk/ui/shared/shared_widget/app_snackbar.dart';
 
 class SignupController extends GetxController {
+  final SharedPreferenceRepository _sharedPrefs = SharedPreferenceRepository();
+
   late TextEditingController fullNameController;
   late TextEditingController userNameController;
   late TextEditingController emailController;
   late TextEditingController passwordController;
   late TextEditingController confirmPasswordController;
-
   final RxBool showPassword = false.obs;
   final RxBool showConfirmPassword = false.obs;
   final RxBool isLoading = false.obs;
@@ -47,11 +51,36 @@ class SignupController extends GetxController {
     }
 
     isLoading.value = true;
+    final fullName = fullNameController.text.trim();
+    final userName = userNameController.text.trim();
+    final email = emailController.text.trim();
+    final password = passwordController.text;
+    final passwordConfirmation = confirmPasswordController.text;
+
     try {
-      await Future.delayed(const Duration(seconds: 2));
-      Get.back(result: true);
+      // Call backend signup
+      final authRepo = AuthRepository();
+      print(fullName);
+      final result = await authRepo.signUp(
+        name: fullName,
+        email: email,
+        username: userName,
+        password: password,
+        passwordConfirmation: passwordConfirmation,
+      );
+
+      result.fold(
+        (error) {
+          AppSnackBar.error(error);
+        },
+        (registerResponse) async {
+          // On success, navigate to OTP registration flow
+
+          Get.toNamed(AppRoutes.otp, arguments:  email);
+        },
+      );
     } catch (e) {
-      AppSnackBar.error('An error occurred');
+      AppSnackBar.error(e.toString());
     } finally {
       isLoading.value = false;
     }
@@ -79,6 +108,7 @@ class SignupController extends GetxController {
       AppSnackBar.error('Passwords do not match');
       return false;
     }
+
     return true;
   }
 }

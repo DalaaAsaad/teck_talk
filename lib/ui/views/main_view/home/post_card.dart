@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:teck_talk/controllers/homecontroller.dart';
 import 'package:teck_talk/core/data/models/post_model.dart';
 import 'package:teck_talk/ui/shared/custom_widget/active_icon.dart';
 import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart'
@@ -14,32 +16,28 @@ import 'package:teck_talk/ui/shared/shared_widget/utilies.dart'
 import 'package:teck_talk/ui/views/code_view/code_model.dart';
 import 'package:teck_talk/ui/views/code_view/code_view.dart';
 
-class PostCard extends StatelessWidget {
-  final PostModel post;
+class PostCard extends GetView<Homecontroller> {
+  final PostSavedModel post;
   final VoidCallback onFavorite;
   final VoidCallback onComment;
   final VoidCallback onSaved;
 
-  const PostCard({
+  PostCard({
     super.key,
     required this.post,
     required this.onFavorite,
     required this.onComment,
     required this.onSaved,
   });
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsetsDirectional.only(
-        top: screenWidth(20),
-        start: screenWidth(50),
-        end: screenWidth(50),
-      ),
+      margin: EdgeInsets.all(screenWidth(50)),
+      padding: EdgeInsets.all(screenWidth(40)),
       decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Appcolor.gray_60.withAlpha(150), width: 1),
-        ),
+        color: Appcolor.dark_20.withAlpha(90),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: Appcolor.dark_20),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,13 +46,15 @@ class PostCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              UsetInfoHeader(
-                nameProfile: post.nameProfile,
-                date: post.date,
-                imageProfile: post.imageProfile,
+              Expanded(
+                child: UsetInfoHeader(
+                  nameProfile: post.user.name,
+                  date: post.createdAt,
+                  imageProfile: post.user.avatarUrl,
+                ),
               ),
 
-              //*  code view
+              // //*  code view
               if (post.code != null && post.code!.isNotEmpty)
                 ViewCodeButton(post.code, post.codeLanguage),
             ],
@@ -64,56 +64,73 @@ class PostCard extends StatelessWidget {
             width: double.infinity,
             margin: EdgeInsetsDirectional.only(top: screenWidth(40)),
             padding: EdgeInsetsDirectional.all(screenWidth(40)),
-            child: CustomText(
-              text: post.textPost,
-              styleType: TextStyleType.BODY,
-              textColor: Appcolor.white.withAlpha(200),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  text: post.title,
+                  styleType: TextStyleType.CUSTOM,
+                  fontSize: screenWidth(19),
+                  textColor: Appcolor.white.withAlpha(200),
+                ),
+                CustomText(
+                  text: post.body,
+                  styleType: TextStyleType.BODY,
+                  textColor: Appcolor.white.withAlpha(200),
+                ),
+              ],
             ),
           ),
 
           //*  tags
-          Wrap(
-            spacing: 8,
-            children: post.tags.map((e) => TagWidget(text: e)).toList(),
-          ),
+          if (post.tags.isNotEmpty)
+            Wrap(
+              spacing: 8,
+              children: post.tags.map((e) => TagWidget(text: e.name)).toList(),
+            ),
+
           //*  post images
-          if (post.images != null && post.images!.isNotEmpty)
+          if (post.photos.isNotEmpty)
             SizedBox(
               height: screenWidth(1.8),
               child: PageView.builder(
-                itemCount: post.images!.length,
+                itemCount: post.photos.length,
                 itemBuilder: (context, index) {
-                  return Image.asset(
-                    post.images![index],
+                  return CachedNetworkImage(
+                    imageUrl: post.photos[index].url,
                     width: double.infinity,
                     fit: BoxFit.cover,
+                    placeholder: (context, url) =>
+                        Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   );
                 },
               ),
             ),
+
           //* active icon for post
           Row(
             children: [
               ActiveIcon(
                 icon: Icon(Icons.favorite_border),
                 iconIsActive: Icon(Icons.favorite),
-                numOfInteractors: NumberFormatter.format(post.numFav),
+                numOfInteractors: NumberFormatter.format(post.likesCount),
                 color: Appcolor.red,
-                isActive: post.isFavorite,
+                isActive: post.isLikedByUser,
                 function: onFavorite,
               ),
               ActiveIcon(
                 icon: Icon(Icons.comment_bank_outlined),
                 iconIsActive: Icon(Icons.comment_bank_outlined),
-                numOfInteractors: NumberFormatter.format(post.numComment),
+                numOfInteractors: NumberFormatter.format(post.commentsCount),
                 color: Appcolor.white.withAlpha(150),
-                isActive: post.isComment,
+                isActive: true,
                 function: onComment,
               ),
               ActiveIcon(
                 icon: Icon(Icons.bookmark_border),
                 iconIsActive: Icon(Icons.bookmark),
-                numOfInteractors: NumberFormatter.format(post.numSaved),
+                numOfInteractors: null,
                 color: Appcolor.white.withAlpha(150),
                 isActive: post.isSaved,
                 function: onSaved,
@@ -142,8 +159,10 @@ Widget ViewCodeButton(String? code, String? languageCode) {
       );
     },
     child: Container(
-      height: screenWidth(7.7),
-      width: screenWidth(3.5),
+      padding: EdgeInsets.symmetric(
+        horizontal: screenWidth(100),
+        vertical: screenWidth(50),
+      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(width: 0.5, color: Appcolor.gray_60),

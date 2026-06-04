@@ -6,13 +6,13 @@ import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
 import 'package:teck_talk/ui/views/main_view/search/widgets/account_card.dart';
 
-class AccountTab extends GetView<search_Controller> {
+class AccountTab extends GetView<Search_Controller> {
   const AccountTab({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final accounts = controller.filteredAccounts;
+      final accounts = controller.accounts;
 
       if (accounts.isEmpty) {
         return Center(

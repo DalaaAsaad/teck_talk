@@ -7,7 +7,7 @@ import 'package:teck_talk/ui/views/main_view/search/widgets/blog_tab.dart';
 import 'package:teck_talk/ui/views/main_view/search/widgets/post_tab.dart';
 import 'package:teck_talk/ui/views/main_view/search/widgets/tab_icon.dart';
 
-class TabBarSection extends GetView<search_Controller> {
+class TabBarSection extends GetView<Search_Controller> {
   const TabBarSection({super.key});
 
   @override

@@ -5,16 +5,20 @@ import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
 import 'package:teck_talk/ui/views/main_view/blog/blog_card.dart';
+import 'package:teck_talk/ui/views/main_view/search/widgets/blog_card_search.dart';
 
-class BlogTab extends GetView<search_Controller> {
+class BlogTab extends GetView<Search_Controller> {
   const BlogTab({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final blogs = controller.filteredBlogs;
+      final blogs = controller.blogs;
 
-      if (blogs.isEmpty) {
+      // Show "No blogs found" only after loading completes and blogs are empty
+      if (!controller.isLoading.value &&
+          blogs.isEmpty &&
+          controller.isSearching) {
         return Center(
           child: CustomText(
             text: 'No blogs found for this search',
@@ -28,7 +32,7 @@ class BlogTab extends GetView<search_Controller> {
         padding: EdgeInsets.only(top: screenWidth(30), bottom: screenWidth(5)),
         itemCount: blogs.length,
         itemBuilder: (context, index) {
-          return BlogCard(blog: blogs[index]);
+          return BlogCardSearch(blog: blogs[index]);
         },
       );
     });

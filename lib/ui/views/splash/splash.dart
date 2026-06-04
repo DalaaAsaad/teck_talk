@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:teck_talk/core/data/repository/shared_pref.dart';
 import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
@@ -13,22 +14,30 @@ class Splash extends StatefulWidget {
   State<Splash> createState() => _SplashState();
 }
 
-class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
-  Timer? _timer;
-  late AnimationController _controller;
+class _SplashState extends State<Splash> {
+  final SharedPreferenceRepository _sharedPrefs = SharedPreferenceRepository();
+
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 4),
-    )..repeat();
+    _navigateFromSplash();
+  }
 
-    Future.delayed(Duration(seconds: 2), () {
-      if (mounted) {
-        Get.offNamed("/intro");
-      }
-    });
+  Future<void> _navigateFromSplash() async {
+    await Future.delayed(const Duration(seconds: 2));
+    if (!mounted) {
+      return;
+    }
+
+    final isLoggedIn = _sharedPrefs.isLoggedIn();
+    if (isLoggedIn) {
+      print(_sharedPrefs.getAuthToken());
+      print(_sharedPrefs.getUserUserName());
+      Get.offAllNamed('/mainView');
+      return;
+    }
+
+    Get.offAllNamed('/intro');
   }
 
   @override
@@ -39,8 +48,6 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    _controller.dispose();
-    _timer?.cancel();
     super.dispose();
   }
 
@@ -53,24 +60,21 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
           child: Column(
             children: [
               const Spacer(),
-              RotationTransition(
-                turns: _controller,
-                child: Container(
-                  padding: EdgeInsets.all(screenWidth(16)),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Appcolor.white.withAlpha(100),
-                        blurRadius: 40,
-                        spreadRadius: 5,
-                      ),
-                    ],
-                  ),
-                  child: SvgPicture.asset(
-                    "assets/images/svg/logo.svg",
-                    width: screenWidth(5),
-                  ),
+              Container(
+                padding: EdgeInsets.all(screenWidth(16)),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Appcolor.white.withAlpha(100),
+                      blurRadius: 40,
+                      spreadRadius: 5,
+                    ),
+                  ],
+                ),
+                child: SvgPicture.asset(
+                  "assets/images/svg/logo.svg",
+                  width: screenWidth(5),
                 ),
               ),
               SizedBox(height: screenWidth(20)),
