@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github-gist.dart';
-import 'package:teck_talk/ui/views/code_view/code_header.dart';
-import 'package:teck_talk/ui/views/code_view/code_model.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/views/code_view/code_header.dart';
+import 'package:tech_talk/ui/views/code_view/code_model.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class CodeView extends StatefulWidget {
   final String? code;
   final String? languageCode;
   final CodeViewMode mode;
   final bool isdialog;
-
+  final TextEditingController? controller;
   const CodeView({
     super.key,
     required this.code,
     required this.mode,
     this.isdialog = false,
-    this.languageCode,
+    this.languageCode, this.controller,
   });
 
   @override
@@ -89,6 +89,7 @@ class _CodeViewState extends State<CodeView> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: TextField(
+                controller: widget.controller,
                 maxLines: 15,
                 minLines: 3,
                 style: TextStyle(color: Appcolor.black_08),

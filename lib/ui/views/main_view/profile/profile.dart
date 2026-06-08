@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/controllers/profile_controller.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:teck_talk/ui/views/main_view/profile/widgets/bio_profile.dart';
-import 'package:teck_talk/ui/views/main_view/profile/widgets/button_profile.dart';
-import 'package:teck_talk/ui/views/main_view/profile/widgets/social_item.dart';
-import 'package:teck_talk/ui/views/main_view/profile/widgets/tabbar_profile.dart';
-import 'package:teck_talk/ui/views/main_view/profile/widgets/top_profile.dart';
-import 'package:teck_talk/ui/views/main_view/profile/widgets/user_info_profile.dart';
-import 'package:teck_talk/ui/views/main_view/profile/widgets/xpbar_profile.dart';
+import 'package:tech_talk/controllers/profile_controller.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/views/main_view/profile/widgets/bio_profile.dart';
+import 'package:tech_talk/ui/views/main_view/profile/widgets/button_profile.dart';
+import 'package:tech_talk/ui/views/main_view/profile/widgets/social_item.dart';
+import 'package:tech_talk/ui/views/main_view/profile/widgets/tabbar_profile.dart';
+import 'package:tech_talk/ui/views/main_view/profile/widgets/top_profile.dart';
+import 'package:tech_talk/ui/views/main_view/profile/widgets/user_info_profile.dart';
+import 'package:tech_talk/ui/views/main_view/profile/widgets/xpbar_profile.dart';
 
 class Profile extends GetView<ProfileController> {
   const Profile({super.key});

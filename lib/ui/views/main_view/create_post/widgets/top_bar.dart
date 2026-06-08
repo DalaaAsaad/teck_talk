@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/controllers/create_post_controller.dart';
+import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/controllers/create_post_controller.dart';
 
 class TopBar extends GetView<CreatePostController> {
   const TopBar({super.key});

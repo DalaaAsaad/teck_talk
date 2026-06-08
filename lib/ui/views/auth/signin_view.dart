@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/controllers/signin_controller.dart';
-import 'package:teck_talk/ui/shared/custom_widget/auth_button.dart';
-import 'package:teck_talk/ui/shared/custom_widget/auth_header_section.dart';
-import 'package:teck_talk/ui/shared/custom_widget/auth_sign_link.dart';
-import 'package:teck_talk/ui/shared/custom_widget/auth_text_field.dart';
-import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/controllers/signin_controller.dart';
+import 'package:tech_talk/ui/shared/custom_widget/auth_button.dart';
+import 'package:tech_talk/ui/shared/custom_widget/auth_header_section.dart';
+import 'package:tech_talk/ui/shared/custom_widget/auth_sign_link.dart';
+import 'package:tech_talk/ui/shared/custom_widget/auth_text_field.dart';
+import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class SigninView extends GetView<SigninController> {
   const SigninView({super.key});

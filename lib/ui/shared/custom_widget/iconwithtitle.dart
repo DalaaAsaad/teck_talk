@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart' show SvgPicture;
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class IconWithTitle extends StatelessWidget {
   final Callback onTap;

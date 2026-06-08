@@ -1,5 +1,5 @@
 
-import 'package:teck_talk/core/data/models/profile_model.dart';
+import 'package:tech_talk/core/data/models/profile_model.dart';
 
 class SignInResponse {
   final String status;

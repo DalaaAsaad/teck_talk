@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:teck_talk/ui/shared/shared_widget/app_snackbar.dart';
+import 'package:tech_talk/ui/shared/shared_widget/app_snackbar.dart';
 
 class EditProfileController extends GetxController {
   static const int bioMaxLength = 200;

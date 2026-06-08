@@ -1,26 +1,30 @@
 import 'package:dartz/dartz.dart';
-import 'package:teck_talk/core/data/models/user_general_model.dart';
-import 'package:teck_talk/core/data/responses/Verify_Otp_response.dart';
-import 'package:teck_talk/core/data/responses/blog_info_response.dart';
-import 'package:teck_talk/core/data/responses/blog_search_response.dart';
-import 'package:teck_talk/core/data/responses/blogs_response.dart';
-import 'package:teck_talk/core/data/responses/commun_response.dart';
-import 'package:teck_talk/core/data/responses/create_post_response.dart';
-import 'package:teck_talk/core/data/responses/is_like_response.dart';
-import 'package:teck_talk/core/data/responses/otp_resend_response.dart';
-import 'package:teck_talk/core/data/responses/posts_response.dart';
-import 'package:teck_talk/core/data/responses/posts_search_response.dart';
-import 'package:teck_talk/core/data/responses/profile_response.dart';
-import 'package:teck_talk/core/data/responses/register_response.dart';
-import 'package:teck_talk/core/data/responses/remove_saved_response.dart';
-import 'package:teck_talk/core/data/responses/save_post_blog_response.dart';
-import 'package:teck_talk/core/data/responses/saved_item_response.dart';
-import 'package:teck_talk/core/data/responses/sign_in_response.dart';
-import 'package:teck_talk/core/data/responses/sign_out_response.dart';
-import 'package:teck_talk/core/data/responses/tags_response.dart';
-import 'package:teck_talk/core/data/responses/user_seach_response.dart';
-import 'package:teck_talk/core/enum/request_type.dart';
-import 'package:teck_talk/core/utils/network_util.dart';
+import 'package:tech_talk/core/data/responses/childrem_comment_response.dart';
+import 'package:tech_talk/core/data/models/user_general_model.dart';
+import 'package:tech_talk/core/data/responses/Verify_Otp_response.dart';
+import 'package:tech_talk/core/data/responses/blog_info_response.dart';
+import 'package:tech_talk/core/data/responses/blog_search_response.dart';
+import 'package:tech_talk/core/data/responses/blogs_response.dart';
+import 'package:tech_talk/core/data/responses/commun_response.dart';
+import 'package:tech_talk/core/data/responses/create_comment_post.dart';
+import 'package:tech_talk/core/data/responses/create_post_response.dart';
+import 'package:tech_talk/core/data/responses/is_like_response.dart';
+import 'package:tech_talk/core/data/responses/like_comment_response.dart';
+import 'package:tech_talk/core/data/responses/otp_resend_response.dart';
+import 'package:tech_talk/core/data/responses/post_comments_response.dart';
+import 'package:tech_talk/core/data/responses/posts_response.dart';
+import 'package:tech_talk/core/data/responses/posts_search_response.dart';
+import 'package:tech_talk/core/data/responses/profile_response.dart';
+import 'package:tech_talk/core/data/responses/register_response.dart';
+import 'package:tech_talk/core/data/responses/remove_saved_response.dart';
+import 'package:tech_talk/core/data/responses/save_post_blog_response.dart';
+import 'package:tech_talk/core/data/responses/saved_item_response.dart';
+import 'package:tech_talk/core/data/responses/sign_in_response.dart';
+import 'package:tech_talk/core/data/responses/sign_out_response.dart';
+import 'package:tech_talk/core/data/responses/tags_response.dart';
+import 'package:tech_talk/core/data/responses/user_seach_response.dart';
+import 'package:tech_talk/core/enum/request_type.dart';
+import 'package:tech_talk/core/utils/network_util.dart';
 
 class AuthRepository {
   //* authentication methods
@@ -293,10 +297,7 @@ class AuthRepository {
     }
   }
 
-
-  //* like methods
-
-  Future<Either<String, LikePostResponse>> like({
+  Future<Either<String, IsLikeResponse>> likePost({
     required int id,
     required String token,
   }) async {
@@ -314,7 +315,7 @@ class AuthRepository {
         CommunResponse<Map<String, dynamic>> communResponse =
             CommunResponse.fromjson(value);
         if (communResponse.getstatuscode) {
-          return Right(LikePostResponse.fromJson(communResponse.data ?? {}));
+          return Right(IsLikeResponse.fromJson(communResponse.data ?? {}));
         } else {
           return Left(communResponse.message);
         }
@@ -325,6 +326,94 @@ class AuthRepository {
     }
   }
 
+  //* commets post methods
+
+  Future<Either<String, PostCommentsResponse>> getPostComments({
+    required int id,
+    required String token,
+  }) async {
+    try {
+      return NetworkUtil.sendRequest(
+        type: RequestType.GET,
+        route: '/api/posts/$id/comments',
+        headers: {
+          "Accept": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      ).then((value) {
+        CommunResponse<Map<String, dynamic>> communResponse =
+            CommunResponse.fromjson(value);
+
+        if (communResponse.getstatuscode) {
+          return Right(
+            PostCommentsResponse.fromJson(communResponse.data ?? {}),
+          );
+        } else {
+          return Left(communResponse.message);
+        }
+      });
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  Future<Either<String, LikeCommentResponse>> likeComment({
+    required int id,
+    required String token,
+  }) async {
+    try {
+      return NetworkUtil.sendRequest(
+        type: RequestType.POST,
+        route: '/api/comments/$id/like',
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      ).then((value) {
+        print(value);
+        CommunResponse<Map<String, dynamic>> communResponse =
+            CommunResponse.fromjson(value);
+        if (communResponse.getstatuscode) {
+          return Right(LikeCommentResponse.fromJson(communResponse.data ?? {}));
+        } else {
+          return Left(communResponse.message);
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+      return Left(e.toString());
+    }
+  }
+
+  Future<Either<String, LikeCommentResponse>> dislikeComment({
+    required int id,
+    required String token,
+  }) async {
+    try {
+      return NetworkUtil.sendRequest(
+        type: RequestType.POST,
+        route: '/api/comments/$id/dislike',
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      ).then((value) {
+        print(value);
+        CommunResponse<Map<String, dynamic>> communResponse =
+            CommunResponse.fromjson(value);
+        if (communResponse.getstatuscode) {
+          return Right(LikeCommentResponse.fromJson(communResponse.data ?? {}));
+        } else {
+          return Left(communResponse.message);
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+      return Left(e.toString());
+    }
+  }
   //* blogs methods
 
   Future<Either<String, BlogsResponse>> getBlogs({
@@ -353,7 +442,6 @@ class AuthRepository {
     }
   }
 
-  
   Future<Either<String, BlogInfoResponse>> getInfoBlog({
     required String token,
     required int id,
@@ -380,6 +468,101 @@ class AuthRepository {
       return Left(e.toString());
     }
   }
+
+  Future<Either<String, IsLikeResponse>> likeBlog({
+    required int id,
+    required String token,
+  }) async {
+    try {
+      return NetworkUtil.sendRequest(
+        type: RequestType.POST,
+        route: '/api/blogs/$id/toggle-like',
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      ).then((value) {
+        print(value);
+        CommunResponse<Map<String, dynamic>> communResponse =
+            CommunResponse.fromjson(value);
+        if (communResponse.getstatuscode) {
+          return Right(IsLikeResponse.fromJson(communResponse.data ?? {}));
+        } else {
+          return Left(communResponse.message);
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+      return Left(e.toString());
+    }
+  }
+
+  
+  Future<Either<String, ChildCommentsResponse>> getChildreenComments({
+  required int id,
+  required int page,
+  required String token,
+  }) async {
+    try {
+      return NetworkUtil.sendRequest(
+        type: RequestType.GET,
+        route: '/api/comments/$id/children',
+        params: {"page": page.toString()},
+        headers: {
+          "Accept": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      ).then((value) {
+        CommunResponse<Map<String, dynamic>> communResponse =
+            CommunResponse.fromjson(value);
+
+        if (communResponse.getstatuscode) {
+          return Right(ChildCommentsResponse.fromJson(communResponse.data ?? {}));
+        } else {
+          return Left(communResponse.message);
+        }
+      });
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+
+    Future<Either<String, CreateCommentPostResponse>> createCommentPost({
+    required String body,
+    required int postId,
+    required String token,
+    required String code,
+    required String codeLanguage,
+  }) async {
+    try {
+      return NetworkUtil.sendRequest(
+        type: RequestType.POST,
+        route: '/api/comments',
+        body: { "body": body, "post_id": postId, "code": code, "code_language": codeLanguage},
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      ).then((value) {
+        print(value);
+        CommunResponse<Map<String, dynamic>> communResponse =
+            CommunResponse.fromjson(value);
+        if (communResponse.getstatuscode) {
+          return Right(CreateCommentPostResponse.fromJson(communResponse.data ?? {}));
+        } else {
+          return Left(communResponse.message);
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+      return Left(e.toString());
+    }
+  }
+
+  //* search methods */
 
   Future<Either<String, dynamic>> getSearch({
     required String query,

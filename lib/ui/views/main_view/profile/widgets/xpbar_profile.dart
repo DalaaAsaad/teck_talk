@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/controllers/profile_controller.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/controllers/profile_controller.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class XpbarProfile extends GetView<ProfileController> {
   const XpbarProfile({super.key});

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:teck_talk/controllers/create_post_controller.dart';
+import 'package:tech_talk/controllers/create_post_controller.dart';
 
 class CreatePostBinding extends Bindings {
   @override

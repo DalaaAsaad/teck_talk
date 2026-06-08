@@ -1,4 +1,4 @@
-package com.example.teck_talk
+package com.example.tech_talk
 
 import io.flutter.embedding.android.FlutterActivity
 

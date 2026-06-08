@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:teck_talk/main.dart';
+import 'package:tech_talk/main.dart';
 
 class SharedPreferenceRepository {
   final SharedPreferences pref = prefs;

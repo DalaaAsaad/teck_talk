@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/controllers/search_controller.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/views/main_view/search/widgets/account_tab.dart';
-import 'package:teck_talk/ui/views/main_view/search/widgets/blog_tab.dart';
-import 'package:teck_talk/ui/views/main_view/search/widgets/post_tab.dart';
-import 'package:teck_talk/ui/views/main_view/search/widgets/tab_icon.dart';
+import 'package:tech_talk/controllers/search_controller.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/views/main_view/search/widgets/account_tab.dart';
+import 'package:tech_talk/ui/views/main_view/search/widgets/blog_tab.dart';
+import 'package:tech_talk/ui/views/main_view/search/widgets/post_tab.dart';
+import 'package:tech_talk/ui/views/main_view/search/widgets/tab_icon.dart';
 
 class TabBarSection extends GetView<Search_Controller> {
   const TabBarSection({super.key});

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:teck_talk/core/data/repository/auth_repository.dart';
-import 'package:teck_talk/core/data/repository/shared_pref.dart';
-import 'package:teck_talk/core/data/responses/tags_response.dart';
-import 'package:teck_talk/ui/shared/shared_widget/app_snackbar.dart';
-import 'package:teck_talk/ui/views/main_view/create_post/widgets/selection_topices_dialog.dart';
+import 'package:tech_talk/core/data/repository/auth_repository.dart';
+import 'package:tech_talk/core/data/repository/shared_pref.dart';
+import 'package:tech_talk/core/data/responses/tags_response.dart';
+import 'package:tech_talk/ui/shared/shared_widget/app_snackbar.dart';
+import 'package:tech_talk/ui/views/main_view/create_post/widgets/selection_topices_dialog.dart';
 
 class CreatePostController extends GetxController {
   // Text controllers

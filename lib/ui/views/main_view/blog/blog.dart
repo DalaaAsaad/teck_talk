@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/controllers/blog_controller.dart';
-import 'package:teck_talk/ui/views/main_view/blog/blog_card.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/controllers/blog_controller.dart';
+import 'package:tech_talk/ui/views/main_view/blog/blog_card.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class blog extends GetView<BlogController> {
   const blog({super.key});

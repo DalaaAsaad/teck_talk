@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:teck_talk/controllers/profile_controller.dart';
-import 'package:teck_talk/core/data/models/post_model.dart';
-import 'package:teck_talk/core/data/responses/saved_item_response.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:teck_talk/ui/views/main_view/profile/widgets/blog_saved_card.dart';
-import 'package:teck_talk/ui/views/main_view/profile/widgets/post_saved_card.dart';
+import 'package:tech_talk/controllers/profile_controller.dart';
+import 'package:tech_talk/core/data/models/post_model.dart';
+import 'package:tech_talk/core/data/responses/saved_item_response.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/views/main_view/profile/widgets/blog_saved_card.dart';
+import 'package:tech_talk/ui/views/main_view/profile/widgets/post_saved_card.dart';
 
 class TabbarProfile extends GetView<ProfileController> {
   const TabbarProfile({super.key});
@@ -49,7 +49,7 @@ class TabbarProfile extends GetView<ProfileController> {
                     } else {
                       return PostSavedCard(
                         post: item,
-                        isDraft: true,
+                        isDraft: item.isPublished ? false : true,
                         onFavorite: () {},
                         onComment: () {},
                         onSaved: () {},
@@ -69,10 +69,8 @@ class TabbarProfile extends GetView<ProfileController> {
                       final blog = item.data as BlogListSavedModel;
                       return BlogSavedCard(blog: blog);
                     }
-
                     if (item.kind == 'post') {
                       final post = item.data as PostSavedModel;
-
                       return PostSavedCard(
                         post: post,
                         onFavorite: () {},
@@ -80,7 +78,6 @@ class TabbarProfile extends GetView<ProfileController> {
                         onSaved: () {},
                       );
                     }
-
                     return const SizedBox();
                   },
                 ),

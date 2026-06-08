@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:teck_talk/ui/shared/shared_widget/app_snackbar.dart';
+import 'package:tech_talk/ui/shared/shared_widget/app_snackbar.dart';
 
 double screenWidth(double percent) {
   if (Get.height > Get.width) {

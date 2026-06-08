@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:teck_talk/controllers/edit_profile_controller.dart';
+import 'package:tech_talk/controllers/edit_profile_controller.dart';
 
 class EditProfileBinding extends Bindings {
   @override

@@ -1,5 +1,5 @@
-import 'package:teck_talk/core/data/models/pagination_model.dart';
-import 'package:teck_talk/core/data/models/post_model.dart';
+import 'package:tech_talk/core/data/models/pagination_model.dart';
+import 'package:tech_talk/core/data/models/post_model.dart';
 
 class PostsResponse {
   final String status;

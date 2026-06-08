@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class SocialLinkRow extends StatelessWidget {
   const SocialLinkRow({required this.assetPath, required this.controller});

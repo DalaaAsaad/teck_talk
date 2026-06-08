@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/controllers/blog_view_controller.dart';
-import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:teck_talk/ui/views/blog_view/widgets/blog_view_header.dart';
-import 'package:teck_talk/ui/views/blog_view/widgets/content_preview.dart';
-import 'package:teck_talk/ui/views/blog_view/widgets/meta_item.dart';
-import 'package:teck_talk/ui/views/blog_view/widgets/metric_chip.dart';
-import 'package:teck_talk/ui/views/blog_view/widgets/table_of_contents_card.dart';
+import 'package:tech_talk/controllers/blog_view_controller.dart';
+import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/views/blog_view/widgets/blog_view_header.dart';
+import 'package:tech_talk/ui/views/blog_view/widgets/content_preview.dart';
+import 'package:tech_talk/ui/views/blog_view/widgets/meta_item.dart';
+import 'package:tech_talk/ui/views/blog_view/widgets/metric_chip.dart';
+import 'package:tech_talk/ui/views/blog_view/widgets/table_of_contents_card.dart';
 
 class BlogView extends GetView<BlogViewController> {
   const BlogView({super.key});
@@ -23,10 +23,14 @@ class BlogView extends GetView<BlogViewController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BlogViewHeader(
-                heroImage: controller.heroImage,
-                title: controller.title,
-                subTitle: controller.subTitle,
+              Obx(
+                () => BlogViewHeader(
+                  heroImage:
+                      controller.blogInfo.value?.coverImageUrl ??
+                      "assets/images/png/blog_image.png",
+                  title: controller.blogInfo.value?.title ?? '',
+                  subTitle: controller.blogInfo.value?.subtitle ?? '',
+                ),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -57,16 +61,29 @@ class BlogView extends GetView<BlogViewController> {
                       ),
                       SizedBox(height: screenWidth(20)),
                       TableOfContentsCard(
-                        tableOfContents: controller.tableOfContents,
+                        tableOfContents:
+                            controller.blogInfo.value?.sections
+                                .map((section) => section.title)
+                                .toList() ??
+                            <String>[],
                       ),
                       SizedBox(height: screenWidth(24)),
                       ContentPreview(
-                        tableOfContents: controller.tableOfContents,
-                        contentMap: controller.contentMap,
+                        tableOfContents:
+                            controller.blogInfo.value?.sections
+                                .map((section) => section.title)
+                                .toList() ??
+                            <String>[],
+                        contentMap: controller.blogInfo.value != null
+                            ? {
+                                for (final section
+                                    in controller.blogInfo.value!.sections)
+                                  section.title: section.content,
+                              }
+                            : {},
                       ),
 
                       SizedBox(height: screenWidth(22)),
-                     
                     ],
                   ),
                 ),
@@ -83,29 +100,31 @@ class BlogView extends GetView<BlogViewController> {
       () => Row(
         children: [
           MetricChip(
-            icon: controller.isFavorite.value
+            icon: controller.blogInfo.value?.isLikedByUser == true
                 ? Icons.favorite
                 : Icons.favorite_border,
             iconColor: Colors.deepOrangeAccent,
-            label: controller.formatEngagement(controller.engagement['likes']),
-            onTap: controller.toggleFavorite,
+            label: controller.formatEngagement(
+              controller.blogInfo.value?.likesCount,
+            ),
+            onTap: () => controller.toggleFavorite(controller.blogInfo.value!),
           ),
           SizedBox(width: screenWidth(34)),
           MetricChip(
             icon: Icons.visibility_outlined,
             iconColor: Appcolor.white,
-            label: controller.formatEngagement(controller.engagement['views']),
+            label: controller.formatEngagement(
+              controller.blogInfo.value?.viewsCount,
+            ),
           ),
           SizedBox(width: screenWidth(34)),
           MetricChip(
-            icon: controller.isSaved.value
+            icon: controller.blogInfo.value?.isSaved == true
                 ? Icons.bookmark
                 : Icons.bookmark_border_rounded,
             iconColor: Appcolor.white,
-            label: controller.formatEngagement(
-              controller.engagement['bookmarks'],
-            ),
-            onTap: controller.toggleSaved,
+            label: "",
+            onTap: () => controller.toggleSaved(controller.blogInfo.value!),
           ),
         ],
       ),
@@ -121,13 +140,17 @@ class BlogView extends GetView<BlogViewController> {
             Expanded(
               child: MetaItem(
                 title: 'Publication Date',
-                value: controller.metadata['Publication Date'] ?? '',
+                value: controller.blogInfo.value?.createdAt.toString() ?? '',
               ),
             ),
             Expanded(
               child: MetaItem(
                 title: 'Category',
-                value: controller.metadata['Category'] ?? '',
+                value:
+                    controller.blogInfo.value?.sections
+                        .map((s) => s.title)
+                        .join(', ') ??
+                    '',
               ),
             ),
           ],
@@ -139,13 +162,13 @@ class BlogView extends GetView<BlogViewController> {
             Expanded(
               child: MetaItem(
                 title: 'Reading Time',
-                value: controller.metadata['Reading Time'] ?? '',
+                value: controller.blogInfo.value?.readingTime.toString() ?? '',
               ),
             ),
             Expanded(
               child: MetaItem(
                 title: 'Author Name',
-                value: controller.metadata['Author Name'] ?? '',
+                value: controller.blogInfo.value?.user.name ?? '',
               ),
             ),
           ],

@@ -1,6 +1,6 @@
 
-import 'package:teck_talk/core/data/models/pagination_model.dart';
-import 'package:teck_talk/core/data/models/user_general_model.dart';
+import 'package:tech_talk/core/data/models/pagination_model.dart';
+import 'package:tech_talk/core/data/models/user_general_model.dart';
 
 class BlogsResponse {
   final String status;

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/core/data/models/user_general_model.dart';
-import 'package:teck_talk/core/data/repository/auth_repository.dart';
-import 'package:teck_talk/core/data/repository/shared_pref.dart';
-import 'package:teck_talk/core/data/responses/blog_search_response.dart';
-import 'package:teck_talk/core/data/responses/posts_search_response.dart';
+import 'package:tech_talk/core/data/models/user_general_model.dart';
+import 'package:tech_talk/core/data/repository/auth_repository.dart';
+import 'package:tech_talk/core/data/repository/shared_pref.dart';
+import 'package:tech_talk/core/data/responses/blog_search_response.dart';
+import 'package:tech_talk/core/data/responses/posts_search_response.dart';
 
 class Search_Controller extends GetxController {
   final SharedPreferenceRepository _sharedPrefs = SharedPreferenceRepository();

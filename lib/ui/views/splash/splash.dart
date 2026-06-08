@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/core/data/repository/shared_pref.dart';
-import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/core/data/repository/shared_pref.dart';
+import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});

@@ -1,16 +1,16 @@
-class LikePostResponse {
+class IsLikeResponse {
   final String status;
   final String message;
   final LikeResponse data;
 
-  LikePostResponse({
+  IsLikeResponse({
     required this.status,
     required this.message,
     required this.data,
   });
 
-  factory LikePostResponse.fromJson(Map<String, dynamic> json) {
-    return LikePostResponse(
+  factory IsLikeResponse.fromJson(Map<String, dynamic> json) {
+    return IsLikeResponse(
       status: json['status'] ?? '',
       message: json['message'] ?? '',
       data: LikeResponse.fromJson(json['data'] ?? {}),

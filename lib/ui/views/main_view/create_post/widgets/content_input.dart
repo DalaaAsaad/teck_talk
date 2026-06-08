@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/controllers/create_post_controller.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/controllers/create_post_controller.dart';
 
 class ContentInput extends GetView<CreatePostController> {
   const ContentInput({super.key});

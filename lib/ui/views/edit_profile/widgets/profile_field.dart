@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:teck_talk/ui/views/edit_profile/widgets/section_title.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/views/edit_profile/widgets/section_title.dart';
 
 class ProfileField extends StatelessWidget {
   const ProfileField({required this.label, required this.controller});

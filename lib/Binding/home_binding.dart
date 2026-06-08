@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:teck_talk/controllers/homecontroller.dart';
+import 'package:tech_talk/controllers/homecontroller.dart';
 
 class HomeBinding extends Bindings {
   @override

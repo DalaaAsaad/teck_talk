@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/core/data/responses/blogs_response.dart';
+import 'package:tech_talk/app/my_routs.dart';
+import 'package:tech_talk/core/data/responses/blogs_response.dart';
 
-import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
-import 'package:teck_talk/ui/shared/custom_widget/tag_widget.dart';
-import 'package:teck_talk/ui/shared/custom_widget/user-info_header.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
+import 'package:tech_talk/ui/shared/custom_widget/tag_widget.dart';
+import 'package:tech_talk/ui/shared/custom_widget/user-info_header.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class BlogCard extends StatelessWidget {
   final BlogModel blog;
@@ -17,7 +18,7 @@ class BlogCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.offAllNamed('/blogView', arguments: blog.id);
+        Get.toNamed(AppRoutes.blogView, arguments: blog.id);
       },
       child: Container(
         margin: EdgeInsetsDirectional.only(

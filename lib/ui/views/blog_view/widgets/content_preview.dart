@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class ContentPreview extends StatelessWidget {
   final List<String> tableOfContents;
@@ -28,7 +28,7 @@ class ContentPreview extends StatelessWidget {
                   text: tableOfContents[i],
                   styleType: TextStyleType.CUSTOM,
                   textColor: Appcolor.white,
-                  fontSize: screenWidth(25),
+                  fontSize: screenWidth(20),
                   fontWeight: FontWeight.w600,
                 ),
                 SizedBox(height: screenWidth(18)),
@@ -36,8 +36,14 @@ class ContentPreview extends StatelessWidget {
                   text:
                       contentMap[tableOfContents[i]] ??
                       'Content preview for ${tableOfContents[i]}',
-                  styleType: TextStyleType.BODY,
-                  textColor: Appcolor.gray_95,
+                  styleType: TextStyleType.CUSTOM,
+                  fontSize: screenWidth(25),
+                  textColor: Appcolor.gray_60,
+                ),
+                Container(
+                  margin: EdgeInsetsDirectional.only(top: screenWidth(40)),
+                  height: screenWidth(300),
+                  color: Appcolor.gray_60.withAlpha(100),
                 ),
               ],
             ),

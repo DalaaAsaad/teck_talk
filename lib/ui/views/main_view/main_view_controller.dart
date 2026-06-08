@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:teck_talk/controllers/blog_controller.dart';
-import 'package:teck_talk/controllers/homecontroller.dart';
-import 'package:teck_talk/controllers/profile_controller.dart';
+import 'package:tech_talk/controllers/blog_controller.dart';
+import 'package:tech_talk/controllers/homecontroller.dart';
+import 'package:tech_talk/controllers/profile_controller.dart';
 
 class MainViewController extends GetxController {
   var currentIndex = 0.obs;

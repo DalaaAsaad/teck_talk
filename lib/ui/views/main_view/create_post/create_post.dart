@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/ui/shared/custom_widget/publish_draft_button_widget.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:teck_talk/controllers/create_post_controller.dart';
-import 'package:teck_talk/ui/views/main_view/create_post/widgets/code_section.dart';
-import 'package:teck_talk/ui/views/main_view/create_post/widgets/content_input.dart';
-import 'package:teck_talk/ui/views/main_view/create_post/widgets/image_section.dart';
-import 'package:teck_talk/ui/views/main_view/create_post/widgets/profile_section.dart';
-import 'package:teck_talk/ui/views/main_view/create_post/widgets/top_bar.dart';
-import 'package:teck_talk/ui/views/main_view/create_post/widgets/topices_section.dart';
+import 'package:tech_talk/ui/shared/custom_widget/publish_draft_button_widget.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/controllers/create_post_controller.dart';
+import 'package:tech_talk/ui/views/main_view/create_post/widgets/code_section.dart';
+import 'package:tech_talk/ui/views/main_view/create_post/widgets/content_input.dart';
+import 'package:tech_talk/ui/views/main_view/create_post/widgets/image_section.dart';
+import 'package:tech_talk/ui/views/main_view/create_post/widgets/profile_section.dart';
+import 'package:tech_talk/ui/views/main_view/create_post/widgets/top_bar.dart';
+import 'package:tech_talk/ui/views/main_view/create_post/widgets/topices_section.dart';
 
 class CreatePost extends GetView<CreatePostController> {
   const CreatePost({super.key});

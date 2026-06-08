@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/controllers/search_controller.dart';
-import 'package:teck_talk/ui/shared/shared_widget/app_snackbar.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:teck_talk/ui/views/main_view/search/widgets/recent_section.dart';
-import 'package:teck_talk/ui/views/main_view/search/widgets/tab_bar_section.dart';
+import 'package:tech_talk/controllers/search_controller.dart';
+import 'package:tech_talk/ui/shared/shared_widget/app_snackbar.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/views/main_view/search/widgets/recent_section.dart';
+import 'package:tech_talk/ui/views/main_view/search/widgets/tab_bar_section.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});

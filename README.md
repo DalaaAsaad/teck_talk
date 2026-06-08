@@ -1,4 +1,4 @@
-# teck_talk
+# tech_talk
 
 A new Flutter project.
 

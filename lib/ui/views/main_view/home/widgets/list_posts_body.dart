@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/controllers/homecontroller.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:teck_talk/ui/views/main_view/home/post_card.dart';
+import 'package:tech_talk/controllers/homecontroller.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/views/main_view/home/post_card.dart';
 
 class ListPostsBody extends GetView<Homecontroller> {
   const ListPostsBody({super.key});

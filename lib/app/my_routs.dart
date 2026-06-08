@@ -15,5 +15,7 @@ class AppRoutes {
   static const createBlog = '/createBlog';
   static const blogView = '/blogView';
   static const profile = '/profile';
+  static const comments = '/comments';
+  static const childreenComments = '/childreenComments';
 
   static const blog="/blog";}

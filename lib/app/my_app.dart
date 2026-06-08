@@ -1,8 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/app/app_pages.dart';
-import 'package:teck_talk/app/my_routs.dart';
+import 'package:tech_talk/app/app_pages.dart';
+import 'package:tech_talk/app/my_routs.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

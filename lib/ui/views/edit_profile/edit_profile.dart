@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/controllers/edit_profile_controller.dart';
-import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:teck_talk/ui/views/edit_profile/widgets/bio_input.dart';
-import 'package:teck_talk/ui/views/edit_profile/widgets/header.dart';
-import 'package:teck_talk/ui/views/edit_profile/widgets/profile_avatar.dart';
-import 'package:teck_talk/ui/views/edit_profile/widgets/profile_field.dart';
-import 'package:teck_talk/ui/views/edit_profile/widgets/section_title.dart';
-import 'package:teck_talk/ui/views/edit_profile/widgets/social_link.dart';
+import 'package:tech_talk/controllers/edit_profile_controller.dart';
+import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/views/edit_profile/widgets/bio_input.dart';
+import 'package:tech_talk/ui/views/edit_profile/widgets/header.dart';
+import 'package:tech_talk/ui/views/edit_profile/widgets/profile_avatar.dart';
+import 'package:tech_talk/ui/views/edit_profile/widgets/profile_field.dart';
+import 'package:tech_talk/ui/views/edit_profile/widgets/section_title.dart';
+import 'package:tech_talk/ui/views/edit_profile/widgets/social_link.dart';
 
 class EditProfile extends GetView<EditProfileController> {
   const EditProfile({super.key});

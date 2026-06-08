@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
-import 'package:teck_talk/core/data/models/post_model.dart';
-import 'package:teck_talk/core/data/repository/shared_pref.dart';
-import 'package:teck_talk/ui/views/comments/comments.dart';
-import 'package:teck_talk/core/data/repository/auth_repository.dart';
-import 'package:teck_talk/ui/shared/shared_widget/app_snackbar.dart';
+import 'package:tech_talk/app/my_routs.dart';
+import 'package:tech_talk/core/data/models/post_model.dart';
+import 'package:tech_talk/core/data/repository/shared_pref.dart';
+import 'package:tech_talk/ui/views/comments/comments.dart';
+import 'package:tech_talk/core/data/repository/auth_repository.dart';
+import 'package:tech_talk/ui/shared/shared_widget/app_snackbar.dart';
+import 'package:tech_talk/ui/views/main_view/blog/blog.dart';
 
 class Homecontroller extends GetxController {
   RxBool isFavorit = false.obs;
@@ -26,6 +28,7 @@ class Homecontroller extends GetxController {
           AppSnackBar.error(failure);
         },
         (postsResponse) {
+          print(postsResponse.data);
           posts.assignAll(postsResponse.data);
           currentPage.value = postsResponse.pagination.currentPage;
           lastPage.value = postsResponse.pagination.lastPage;
@@ -60,16 +63,18 @@ class Homecontroller extends GetxController {
   }
 
   void toggleComment(PostSavedModel post) {
-    // post.isComment.value = !post.isComment.value;
-    Get.bottomSheet(
-      Comments(),
-      isScrollControlled: true,
-      enableDrag: true,
-      enterBottomSheetDuration: Duration(milliseconds: 400),
-      exitBottomSheetDuration: Duration(milliseconds: 300),
+    Get.toNamed(
+      AppRoutes.comments,
+      arguments: [
+        post.id,
+        post.commentsCount,
+        post.likesCount,
+        post.isLikedByUser,
+      ],
     );
   }
 
+  //* saved method */
   void toggleSaved(PostSavedModel post) {
     if (!post.isSaved) {
       savedRequest(post);
@@ -77,8 +82,6 @@ class Homecontroller extends GetxController {
       removeSaved(post);
     }
   }
-
-  //* saved request */
 
   void savedRequest(PostSavedModel post) async {
     try {
@@ -132,7 +135,7 @@ class Homecontroller extends GetxController {
   void likePost(PostSavedModel post) async {
     try {
       final token = await _sharedPrefs.getAuthToken();
-      final result = await _authRepository.like(id: post.id, token: token!);
+      final result = await _authRepository.likePost(id: post.id, token: token!);
       result.fold(
         (failure) {
           AppSnackBar.error(failure);

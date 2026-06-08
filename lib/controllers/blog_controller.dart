@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:teck_talk/core/data/repository/auth_repository.dart';
-import 'package:teck_talk/core/data/repository/shared_pref.dart';
-import 'package:teck_talk/core/data/responses/blogs_response.dart';
+import 'package:tech_talk/core/data/repository/auth_repository.dart';
+import 'package:tech_talk/core/data/repository/shared_pref.dart';
+import 'package:tech_talk/core/data/responses/blogs_response.dart';
 
-import 'package:teck_talk/ui/shared/shared_widget/app_snackbar.dart';
+import 'package:tech_talk/ui/shared/shared_widget/app_snackbar.dart';
 
 class BlogController extends GetxController {
   final AuthRepository _authRepository = AuthRepository();

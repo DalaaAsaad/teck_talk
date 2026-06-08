@@ -1,4 +1,4 @@
-import 'package:teck_talk/core/data/models/user_general_model.dart';
+import 'package:tech_talk/core/data/models/user_general_model.dart';
 
 class BlogInfoResponse {
   final String status;
@@ -25,17 +25,17 @@ class BlogInfoData {
   final String title;
   final String subtitle;
   final String? coverImageUrl;
-  final String readingTime;
+  final String? readingTime;
   final bool isPublished;
   final bool isModified;
   final UserGeneralModel user;
   final int commentsCount;
-  final int likesCount;
-  final bool isLikedByUser;
+  int likesCount;
+  bool isLikedByUser;
   final List<Tag> tags;
   final int viewsCount;
   final bool isViewed;
-  final bool isSaved;
+  bool isSaved;
   final List<Section> sections;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -45,7 +45,7 @@ class BlogInfoData {
     required this.title,
     required this.subtitle,
     this.coverImageUrl,
-    required this.readingTime,
+    this.readingTime,
     required this.isPublished,
     required this.isModified,
     required this.user,

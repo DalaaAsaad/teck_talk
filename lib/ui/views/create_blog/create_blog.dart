@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
-import 'package:teck_talk/ui/shared/custom_widget/publish_draft_button_widget.dart';
-import 'package:teck_talk/ui/shared/custom_widget/upload_image_container.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:teck_talk/controllers/create_blog_controller.dart';
-import 'package:teck_talk/ui/views/create_blog/widgets/content_section_card.dart';
-import 'package:teck_talk/ui/views/create_blog/widgets/add_section_button.dart';
-import 'package:teck_talk/ui/views/create_blog/widgets/drop_down_field.dart';
-import 'package:teck_talk/ui/views/create_blog/widgets/glass_input_field.dart';
-import 'package:teck_talk/ui/views/create_blog/widgets/section_label.dart';
-import 'package:teck_talk/ui/views/create_blog/widgets/table_of_contents.dart';
+import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
+import 'package:tech_talk/ui/shared/custom_widget/publish_draft_button_widget.dart';
+import 'package:tech_talk/ui/shared/custom_widget/upload_image_container.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/controllers/create_blog_controller.dart';
+import 'package:tech_talk/ui/views/create_blog/widgets/content_section_card.dart';
+import 'package:tech_talk/ui/views/create_blog/widgets/add_section_button.dart';
+import 'package:tech_talk/ui/views/create_blog/widgets/drop_down_field.dart';
+import 'package:tech_talk/ui/views/create_blog/widgets/glass_input_field.dart';
+import 'package:tech_talk/ui/views/create_blog/widgets/section_label.dart';
+import 'package:tech_talk/ui/views/create_blog/widgets/table_of_contents.dart';
 
 class CreateBlog extends GetView<CreateBlogController> {
   const CreateBlog({super.key});

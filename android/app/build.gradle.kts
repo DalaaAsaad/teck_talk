@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.teck_talk"
+    namespace = "com.example.tech_talk"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.3.13750724"
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:teck_talk/ui/views/code_view/code_view.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/views/code_view/code_view.dart';
 
 class CodeDialog extends StatelessWidget {
   final CodeView codeView;

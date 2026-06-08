@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:teck_talk/controllers/blog_view_controller.dart';
+import 'package:tech_talk/controllers/blog_view_controller.dart';
 
 class BlogViewBinding extends Bindings {
   @override

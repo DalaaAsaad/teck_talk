@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:teck_talk/app/my_app.dart';
+import 'package:tech_talk/app/my_app.dart';
 
 late SharedPreferences prefs;
 void main() async {

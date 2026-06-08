@@ -1,7 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:teck_talk/ui/shared/custom_widget/custom_text.dart';
-import 'package:teck_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:teck_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
+import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class BlogViewHeader extends StatelessWidget {
   final String heroImage;
@@ -37,19 +37,37 @@ class BlogViewHeader extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsetsDirectional.only(
-              start: screenWidth(16),
-              end: screenWidth(16),
-              top: screenWidth(2),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomText(text: title, styleType: TextStyleType.TITLE),
-                CustomText(text: subTitle, styleType: TextStyleType.SUBTITLE),
-              ],
-            ),
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+
+            children: [
+              AutoSizeText(
+                title,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                style: TextStyle(
+                  color: Appcolor.white,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
+                minFontSize: 14,
+                overflow: TextOverflow.ellipsis,
+              ),
+              AutoSizeText(
+                subTitle,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                style: TextStyle(
+                  color: Appcolor.white,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
+                minFontSize: 14,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
         ],
       ),

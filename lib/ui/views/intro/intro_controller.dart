@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:teck_talk/app/my_routs.dart';
+import 'package:tech_talk/app/my_routs.dart';
 
 class IntroController extends GetxController {
   RxBool isPressed = false.obs;
