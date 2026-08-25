@@ -18,6 +18,7 @@ class PaginationModel {
   });
 
   factory PaginationModel.fromJson(Map<String, dynamic> json) {
+    print("json: $json");
     return PaginationModel(
       currentPage: json['current_page'] ?? 0,
       lastPage: json['last_page'] ?? 0,

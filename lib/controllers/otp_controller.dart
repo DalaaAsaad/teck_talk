@@ -13,17 +13,17 @@ class OtpController extends GetxController {
   late List<FocusNode> otpFocusNodes;
   final RxBool isLoading = false.obs;
   final RxBool canResend = false.obs;
-  final RxInt resendSeconds = 30.obs;
+  final RxInt resendSeconds = 60.obs;
   final RxString otpCode = ''.obs;
   Timer? countdownTimer;
-  late String userEmail = "";
+  late final String userEmail;
   final AuthRepository _authRepository = AuthRepository();
 
   @override
   void onInit() {
     super.onInit();
+    userEmail = (Get.arguments as String?) ?? _sharedPrefs.getUserEmail() ?? '';
     _initializeOtpFields();
-    userEmail = Get.arguments;
     _startCountdown();
   }
 
@@ -68,9 +68,13 @@ class OtpController extends GetxController {
       return;
     }
 
+    if (userEmail.isEmpty) {
+      AppSnackBar.error('Email address is missing');
+      return;
+    }
+
     isLoading.value = true;
     try {
-      // call backend to verify otp
       final result = await _authRepository.otpSign(
         email: userEmail,
         code: otpCode.value,
@@ -81,16 +85,15 @@ class OtpController extends GetxController {
           AppSnackBar.error(failure);
         },
         (VerifyOtpResponse) async {
-          // save token and user info
           await _sharedPrefs.saveAuthToken(VerifyOtpResponse.data.accessToken);
           await _sharedPrefs.saveVerifiedUser(
             fullName: VerifyOtpResponse.data.user.name,
             userName: VerifyOtpResponse.data.user.username,
             email: VerifyOtpResponse.data.user.email,
+            userId: VerifyOtpResponse.data.user.id,
           );
-          print(_sharedPrefs.getUserEmail());
           AppSnackBar.success('Email verified successfully');
-          Get.offAllNamed(AppRoutes.mainView);
+          Get.toNamed(AppRoutes.editProfile, arguments: {'isOnboarding': true});
         },
       );
     } catch (e) {
@@ -102,6 +105,11 @@ class OtpController extends GetxController {
 
   Future<void> resendOtp() async {
     if (!canResend.value) {
+      return;
+    }
+
+    if (userEmail.isEmpty) {
+      AppSnackBar.error('Email address is missing');
       return;
     }
 

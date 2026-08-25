@@ -42,7 +42,7 @@ class CommentModel {
   String likesCount;
   String dislikesCount;
   final bool isModified;
-  final bool isHighlighted;
+   bool isHighlighted;
   bool isLikedByUser;
   bool isDislikedByUser;
   final String userName;

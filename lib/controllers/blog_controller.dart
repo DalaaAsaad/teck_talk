@@ -31,4 +31,8 @@ class BlogController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  Future<void> refreshblogs() async {
+    await getBlogs();
+  }
 }

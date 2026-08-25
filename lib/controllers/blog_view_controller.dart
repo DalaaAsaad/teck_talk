@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tech_talk/core/data/repository/auth_repository.dart';
 import 'package:tech_talk/core/data/repository/shared_pref.dart';
@@ -14,6 +15,11 @@ class BlogViewController extends GetxController {
   final RxInt viewsCount = 0.obs;
   final RxInt bookmarksCount = 0.obs;
   final Rxn<BlogInfoData> blogInfo = Rxn<BlogInfoData>();
+  final ScrollController scrollController = ScrollController();
+  final RxDouble scrollProgress = 0.0.obs;
+  final RxBool alreadyViewed = false.obs;
+  final RxInt recordedViewsCount = 0.obs;
+  final int currentUserId = SharedPreferenceRepository().getUserId() ?? 0;
 
   int? get blogId {
     final arguments = Get.arguments;
@@ -21,7 +27,8 @@ class BlogViewController extends GetxController {
     if (arguments is String) return int.tryParse(arguments);
     return null;
   }
-//* load blog info
+
+  //* load blog info
   Future<void> loadBlogInfo() async {
     final id = blogId;
     if (id == null) {
@@ -53,8 +60,7 @@ class BlogViewController extends GetxController {
     }
   }
 
-
-//* like blog method
+  //* like blog method
   void likeBlog(BlogInfoData blog) async {
     try {
       final token = await _sharedPrefs.getAuthToken();
@@ -78,13 +84,36 @@ class BlogViewController extends GetxController {
       AppSnackBar.error(e.toString());
     }
   }
+
+  void deleteBlog(BlogInfoData blog) async {
+    try {
+      final token = await _sharedPrefs.getAuthToken();
+      final result = await _authRepository.deleteBlog(
+        idBlog: blog.id,
+        token: token!,
+      );
+      result.fold(
+        (failure) {
+          AppSnackBar.error(failure);
+        },
+        (response) {
+          Get.back(result: blog.id);
+          AppSnackBar.success('Blog deleted successfully');
+        },
+      );
+    } catch (e) {
+      print(e.toString());
+      AppSnackBar.error(e.toString());
+    }
+  }
+
   void toggleFavorite(BlogInfoData blog) {
     likeBlog(blog);
   }
 
-//*  saved blog method
+  //*  saved blog method
 
-void toggleSaved(BlogInfoData blog) {
+  void toggleSaved(BlogInfoData blog) {
     if (!blog.isSaved) {
       savedRequest(blog);
     } else {
@@ -139,10 +168,6 @@ void toggleSaved(BlogInfoData blog) {
     }
   }
 
-
-
-
-
   String formatEngagement(int? value) {
     final number = value ?? 0;
 
@@ -157,14 +182,72 @@ void toggleSaved(BlogInfoData blog) {
     return number.toString();
   }
 
+  Future<void> recordBlogView() async {
+    final id = blogId;
+
+    if (id == null) return;
+
+    try {
+      final token = await _sharedPrefs.getAuthToken();
+
+      if (token == null || token.isEmpty) {
+        return;
+      }
+
+      final result = await _authRepository.viewed(
+        blogId: id,
+        type: 'blog',
+        token: token,
+      );
+
+      result.fold(
+        (failure) {
+          print('View error: $failure');
+        },
+        (response) {
+          alreadyViewed.value = response.data?.alreadyViewed ?? false;
+
+          recordedViewsCount.value = response.data?.viewsCount ?? 0;
+
+          print('Already viewed: ${alreadyViewed.value}');
+
+          print('Views count: ${recordedViewsCount.value}');
+        },
+      );
+    } catch (e) {
+      print('Record view error: $e');
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
-    loadBlogInfo();
+
+    scrollController.addListener(() {
+      if (!scrollController.hasClients) return;
+
+      final position = scrollController.position;
+
+      if (position.maxScrollExtent <= 0) {
+        scrollProgress.value = 0;
+        return;
+      }
+
+      final progress = position.pixels / position.maxScrollExtent;
+
+      scrollProgress.value = progress.clamp(0.0, 1.0);
+    });
+    _initializeBlog();
+  }
+
+  Future<void> _initializeBlog() async {
+    await loadBlogInfo();
+    await recordBlogView();
   }
 
   @override
   void onClose() {
+    scrollController.dispose();
     super.onClose();
   }
 }

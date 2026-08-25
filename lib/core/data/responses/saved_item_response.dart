@@ -17,12 +17,14 @@ class SavedItemsResponse {
 
   factory SavedItemsResponse.fromJson(Map<String, dynamic> json) {
     return SavedItemsResponse(
-      status: json['status'],
-      message: json['message'],
-      data: (json['data'] as List)
-          .map((e) => SavedItem.fromJson(e))
+      status: json['status']?.toString() ?? '',
+      message: json['message']?.toString() ?? '',
+      data: (json['data'] as List<dynamic>? ?? [])
+          .map((e) => SavedItem.fromJson(Map<String, dynamic>.from(e)))
           .toList(),
-      pagination: PaginationModel.fromJson(json['pagination']),
+      pagination: json['pagination'] != null
+          ? PaginationModel.fromJson(json['pagination'])
+          : PaginationModel.fromJson(const {}),
     );
   }
 }
@@ -32,25 +34,21 @@ class SavedItem {
   final String savedAt;
   final dynamic data;
 
-  SavedItem({
-    required this.kind,
-    required this.savedAt,
-    required this.data,
-  });
+  SavedItem({required this.kind, required this.savedAt, required this.data});
 
   factory SavedItem.fromJson(Map<String, dynamic> json) {
+    final kind = json['kind']?.toString() ?? '';
+    final rawData = json['data'] as Map<String, dynamic>? ?? {};
+
     return SavedItem(
-      kind: json['kind'],
-      savedAt: json['saved_at'],
-      data: json['kind'] == 'blog'
-          ? BlogListSavedModel.fromJson(json['data'])
-          : PostSavedModel.fromJson(json['data']),
+      kind: kind,
+      savedAt: json['saved_at']?.toString() ?? '',
+      data: kind == 'blog'
+          ? BlogListSavedModel.fromJson(rawData)
+          : PostModel.fromJson(rawData),
     );
   }
 }
-
-
-
 
 class BlogListSavedModel {
   final int id;
@@ -89,24 +87,36 @@ class BlogListSavedModel {
     required this.updatedAt,
   });
 
+  /// كل حقل هون محمي بقيمة افتراضية - نفس أسلوب PostModel، حتى الموديل
+  /// ما ينكسر لو أي حقل رجع null من السيرفر (زي reading_time لمقالة
+  /// مسودة مثلاً).
   factory BlogListSavedModel.fromJson(Map<String, dynamic> json) {
     return BlogListSavedModel(
-      id: json['id'],
-      title: json['title'],
-      subtitle: json['subtitle'],
-      coverImageUrl: json['cover_image_url'],
-      readingTime: json['reading_time'],
-      isPublished: json['is_published'],
-      isModified: json['is_modified'],
-      user: UserGeneralModel.fromJson(json['user']),
-      commentsCount: json['comments_count'],
-      likesCount: json['likes_count'],
-      isLikedByUser: json['is_liked_by_user'],
-      viewsCount: json['views_count'],
-      isViewed: json['is_viewed'],
-      isSaved: json['is_saved'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      id: _readInt(json['id']),
+      title: json['title']?.toString() ?? '',
+      subtitle: json['subtitle']?.toString() ?? '',
+      coverImageUrl: json['cover_image_url']?.toString(),
+      readingTime: json['reading_time']?.toString() ?? '',
+      isPublished: json['is_published'] == true,
+      isModified: json['is_modified'] == true,
+      user: json['user'] != null
+          ? UserGeneralModel.fromJson(json['user'])
+          : UserGeneralModel.fromJson(const {}),
+      commentsCount: _readInt(json['comments_count']),
+      likesCount: _readInt(json['likes_count']),
+      isLikedByUser: json['is_liked_by_user'] == true,
+      viewsCount: _readInt(json['views_count']),
+      isViewed: json['is_viewed'] == true,
+      isSaved: json['is_saved'] == true,
+      createdAt: json['created_at']?.toString() ?? '',
+      updatedAt: json['updated_at']?.toString() ?? '',
     );
+  }
+
+  static int _readInt(dynamic value) {
+    if (value == null) return 0;
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    return int.tryParse(value.toString()) ?? 0;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tech_talk/core/utils/responsive.dart';
 
 import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 import 'package:tech_talk/ui/views/code_view/code_view.dart';
 
 class CodeDialog extends StatelessWidget {
@@ -12,10 +12,17 @@ class CodeDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Appcolor.Black_05,
-      insetPadding: EdgeInsets.all(screenWidth(30)),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: codeView,
+      backgroundColor: Colors.transparent,
+
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: Responsive.wp(0.03),
+        vertical: Responsive.hp(0.05),
+      ),
+
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: Responsive.hp(0.8)),
+        child: codeView,
+      ),
     );
   }
 }

@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tech_talk/app/my_routs.dart';
+import 'package:tech_talk/controllers/account_controller.dart';
+import 'package:tech_talk/controllers/post_action_controller.dart';
+import 'package:tech_talk/core/data/models/post_model.dart';
 import 'package:tech_talk/core/data/models/user_general_model.dart';
 import 'package:tech_talk/core/data/repository/auth_repository.dart';
 import 'package:tech_talk/core/data/repository/shared_pref.dart';
 import 'package:tech_talk/core/data/responses/blog_search_response.dart';
-import 'package:tech_talk/core/data/responses/posts_search_response.dart';
+import 'package:tech_talk/ui/shared/shared_widget/app_snackbar.dart';
 
 class Search_Controller extends GetxController {
   final SharedPreferenceRepository _sharedPrefs = SharedPreferenceRepository();
   final AuthRepository _authRepository = AuthRepository();
-
+  final int currentUserId = SharedPreferenceRepository().getUserId() ?? 0;
   var searchText = ''.obs;
   var isShowFilters = false.obs;
   final RxBool isLoading = false.obs;
   final RxList<String> selectedFilters = <String>[].obs;
   final RxList<String> recentSearches = <String>[].obs;
-  final RxList<PostSearchModel> posts = <PostSearchModel>[].obs;
+  final RxList<PostModel> posts = <PostModel>[].obs;
   final RxList<UserGeneralModel> accounts = <UserGeneralModel>[].obs;
   final RxList<BlogSearchModel> blogs = <BlogSearchModel>[].obs;
-
+  final RxBool hasSearchText = false.obs;
+  final PostActionController postActionController =
+      Get.find<PostActionController>();
+  final AccountController controller = Get.find<AccountController>();
   final List<String> allFilters = [
     "Frontend",
     "AI",
@@ -59,6 +66,9 @@ class Search_Controller extends GetxController {
     accounts.clear();
     blogs.clear();
     _sharedPrefs.clearLastSearchQuery();
+    textController.clear();
+    hasSearchText.value = false;
+    showSearchResults.value = false;
   }
 
   void setSearchFromTag(String tag) {
@@ -140,6 +150,73 @@ class Search_Controller extends GetxController {
       recentSearches.assignAll(savedRecent);
     }
   }
+
+  Future<void> refreshSearchTab() async {
+    final query = searchText.value.trim();
+
+    if (query.length < 2) {
+      return;
+    }
+
+    final token = await _sharedPrefs.getAuthToken();
+
+    if (token == null || token.isEmpty) {
+      return;
+    }
+
+    try {
+      final result = await _authRepository.getSearch(
+        query: query,
+        tab: 'posts',
+        page: 1,
+        token: token,
+      );
+
+      result.fold(
+        (failure) {
+          AppSnackBar.error(failure);
+        },
+        (response) {
+          posts.assignAll(response.data);
+        },
+      );
+    } catch (e) {
+      print('❌ refreshSearchTab error: $e');
+    }
+  }
+
+  Future<void> toggleFavorite(PostModel post) async {
+    await postActionController.likePost(post);
+    await refreshSearchTab();
+  }
+
+  void toggleComment(PostModel post) {
+    Get.toNamed(AppRoutes.comments, arguments: post);
+  }
+
+  Future<void> toggleSaved(PostModel post) async {
+    if (!post.isSaved) {
+      await postActionController.savedRequest(post);
+    } else {
+      await postActionController.removeSaved(post);
+    }
+
+    await refreshSearchTab();
+  }
+
+  Future<void> toggleDelete(PostModel post) async {
+    await postActionController.DeletePost(post);
+    await refreshSearchTab();
+  }
+
+  // Future<void> toggleFollow(UserGeneralModel account) async {
+  //   final wasFollowing = account.isFollowing;
+
+  //   await controller.follow(userId: account.id, isDel: wasFollowing);
+
+  //   account.isFollowing = !wasFollowing;
+  //   accounts.refresh();
+  // }
 
   Future<bool> _fetchSearchResults(String query) async {
     final token = await _sharedPrefs.getAuthToken();

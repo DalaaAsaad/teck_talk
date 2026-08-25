@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tech_talk/app/app_pages.dart';
 import 'package:tech_talk/app/my_routs.dart';
+import 'package:tech_talk/core/data/repository/shared_pref.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
+    print(SharedPreferenceRepository().getAuthToken());
     return GetMaterialApp(
       initialRoute: AppRoutes.splash,
       getPages: AppPages.pagesView,

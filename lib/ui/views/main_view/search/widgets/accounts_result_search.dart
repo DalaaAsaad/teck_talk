@@ -1,30 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:tech_talk/core/data/models/user_general_model.dart';
+import 'package:tech_talk/core/utils/responsive.dart';
 import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class AccountsResultSearch extends StatelessWidget {
-  const AccountsResultSearch({super.key, required this.account});
+  const AccountsResultSearch({
+    super.key,
+    required this.account,
+  });
 
   final UserGeneralModel account;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(screenWidth(28)),
-      decoration: BoxDecoration(
-        color: Appcolor.Black_05,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Appcolor.gray_60.withAlpha(70), width: 0.8),
+      width: double.infinity,
+
+      padding: EdgeInsets.all(
+        Responsive.wp(0.04),
       ),
+
+      decoration: BoxDecoration(
+        color: Appcolor.panel,
+        borderRadius: BorderRadius.circular(
+          Responsive.wp(0.045),
+        ),
+        border: Border.all(
+          color: Appcolor.panelEdge,
+          width: 1,
+        ),
+      ),
+
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // =========================
+          // Avatar
+          // =========================
           CircleAvatar(
-            radius: screenWidth(15),
-            backgroundImage: AssetImage(account.avatarUrl),
+            radius: Responsive.wp(0.075),
+
+            backgroundColor: Appcolor.panelEdge,
+
+            backgroundImage: account.avatarUrl.isNotEmpty
+                ? NetworkImage(account.avatarUrl)
+                : null,
+
+            onBackgroundImageError: (_, __) {},
+
+            child: account.avatarUrl.isEmpty
+                ? Icon(
+                    Icons.person_rounded,
+                    color: Appcolor.muted,
+                    size: Responsive.sp(0.06),
+                  )
+                : null,
           ),
-          SizedBox(width: screenWidth(35)),
+
+          SizedBox(
+            width: Responsive.wp(0.035),
+          ),
+
+          // =========================
+          // User information
+          // =========================
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,42 +73,70 @@ class AccountsResultSearch extends StatelessWidget {
                 CustomText(
                   text: account.name,
                   styleType: TextStyleType.CUSTOM,
-                  fontSize: screenWidth(20),
+                  fontSize: Responsive.sp(0.042),
                   fontWeight: FontWeight.w700,
+                  textColor: Appcolor.white,
+       
                 ),
-                SizedBox(height: screenWidth(90)),
+
+                SizedBox(
+                  height: Responsive.hp(0.005),
+                ),
+
                 CustomText(
-                  text: account.username,
+                  text: '@${account.username}',
                   styleType: TextStyleType.BODY,
-                  textColor: Appcolor.gray_60,
+                  fontSize: Responsive.sp(0.034),
+                  textColor: Appcolor.muted,
+     
                 ),
               ],
             ),
           ),
-          SizedBox(width: screenWidth(35)),
+
+          SizedBox(
+            width: Responsive.wp(0.025),
+          ),
+
+          // =========================
+          // Follow button
+          // =========================
           Container(
             padding: EdgeInsets.symmetric(
-              horizontal: screenWidth(30),
-              vertical: screenWidth(30),
+              horizontal: Responsive.wp(0.025),
+              vertical: Responsive.hp(0.009),
             ),
+
             decoration: BoxDecoration(
-              color: Appcolor.black_08,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Appcolor.gray_60.withAlpha(50)),
+              color: Appcolor.bg,
+              borderRadius: BorderRadius.circular(
+                Responsive.wp(0.035),
+              ),
+              border: Border.all(
+                color: Appcolor.panelEdge,
+                width: 1,
+              ),
             ),
+
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 CustomText(
                   text: 'Follow',
                   styleType: TextStyleType.BODY,
-                  textColor: Appcolor.gray_60,
+                  fontSize: Responsive.sp(0.032),
+                  fontWeight: FontWeight.w500,
+                  textColor: Appcolor.muted,
                 ),
-                SizedBox(width: screenWidth(50)),
+
+                SizedBox(
+                  width: Responsive.wp(0.015),
+                ),
+
                 Icon(
-                  Icons.add,
-                  color: Appcolor.yellow_70,
-                  size: screenWidth(15),
+                  Icons.add_rounded,
+                  color: Appcolor.accent,
+                  size: Responsive.sp(0.045),
                 ),
               ],
             ),

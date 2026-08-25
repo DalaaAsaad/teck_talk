@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
-import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
+import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
 
-import 'appcolor.dart';
 
 class AppSnackBar {
   static void success(String message, {String title = 'Success'}) {
     _show(
       title: title,
       message: message,
-      accentColor: Appcolor.yellow_70,
+      accentColor: Appcolor.success,
       icon: Icons.check_circle_rounded,
     );
   }
@@ -34,58 +32,122 @@ class AppSnackBar {
     Get.snackbar(
       '',
       '',
-      titleText: Row(
+      titleText: _SnackContent(
+        title: title,
+        message: message,
+        accentColor: accentColor,
+        icon: icon,
+      ),
+      messageText: const SizedBox.shrink(),
+      snackPosition: SnackPosition.TOP,
+      snackStyle: SnackStyle.FLOATING,
+      backgroundColor: Appcolor.panel,
+      borderRadius: 20,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: EdgeInsets.zero,
+      duration: const Duration(seconds: 3),
+      isDismissible: true,
+      dismissDirection: DismissDirection.horizontal,
+      borderColor: accentColor.withOpacity(0.35),
+      borderWidth: 1.5,
+      boxShadows: [
+        BoxShadow(
+          color: accentColor.withOpacity(0.12),
+          blurRadius: 24,
+          offset: const Offset(0, 8),
+        ),
+        BoxShadow(
+          color: Colors.black.withOpacity(0.35),
+          blurRadius: 16,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────
+//  Snack content widget
+// ─────────────────────────────────────────────
+class _SnackContent extends StatelessWidget {
+  final String title;
+  final String message;
+  final Color accentColor;
+  final IconData icon;
+
+  const _SnackContent({
+    required this.title,
+    required this.message,
+    required this.accentColor,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // ── Icon badge ────────────────────────────────
           Container(
-            width: screenWidth(11),
-            height: screenWidth(11),
+            width: 42,
+            height: 42,
             decoration: BoxDecoration(
-              color: accentColor.withAlpha(30),
-              shape: BoxShape.circle,
+              color: accentColor.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: accentColor.withOpacity(0.25),
+                width: 1,
+              ),
             ),
-            child: Icon(icon, color: accentColor, size: screenWidth(20)),
+            child: Icon(icon, color: accentColor, size: 20),
           ),
-          SizedBox(width: screenWidth(34)),
+
+          const SizedBox(width: 13),
+
+          // ── Left accent line ──────────────────────────
+          Container(
+            width: 1.5,
+            height: 36,
+            decoration: BoxDecoration(
+              color: accentColor.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+
+          const SizedBox(width: 13),
+
+          // ── Text block ────────────────────────────────
           Expanded(
-            child: CustomText(
-              text: title,
-              styleType: TextStyleType.CUSTOM,
-              fontSize: screenWidth(20),
-              fontWeight: FontWeight.w700,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Appcolor.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.1,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  message,
+                  style: const TextStyle(
+                    color: Appcolor.muted,
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w400,
+                    height: 1.4,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
-      messageText: Padding(
-        padding: EdgeInsetsDirectional.only(top: screenWidth(68.5)),
-        child: CustomText(
-          text: message,
-          styleType: TextStyleType.CUSTOM,
-          fontSize: screenWidth(25),
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      snackPosition: SnackPosition.TOP,
-      snackStyle: SnackStyle.FLOATING,
-      backgroundColor: Appcolor.gray_60.withAlpha(200),
-      borderRadius: 18,
-      margin: EdgeInsets.all(screenWidth(25)),
-      padding: EdgeInsets.symmetric(
-        horizontal: screenWidth(25),
-        vertical: screenWidth(25),
-      ),
-      duration: const Duration(seconds: 3),
-      isDismissible: true,
-      dismissDirection: DismissDirection.horizontal,
-      borderColor: accentColor,
-      borderWidth: 2,
-      boxShadows: [
-        BoxShadow(
-          color: Appcolor.black_08.withAlpha(200),
-          blurRadius: 18,
-          offset: const Offset(0, 10),
-        ),
-      ],
     );
   }
 }

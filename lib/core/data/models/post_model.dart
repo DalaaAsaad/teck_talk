@@ -1,6 +1,6 @@
 import 'package:tech_talk/core/data/models/user_general_model.dart';
 
-class PostSavedModel {
+class PostModel {
   final int id;
   final String title;
   final String body;
@@ -22,7 +22,7 @@ class PostSavedModel {
   final String createdAt;
   final String updatedAt;
 
-  PostSavedModel({
+  PostModel({
     required this.id,
     required this.title,
     required this.body,
@@ -45,33 +45,45 @@ class PostSavedModel {
     required this.updatedAt,
   });
 
-  factory PostSavedModel.fromJson(Map<String, dynamic> json) {
-    return PostSavedModel(
-      id: json['id'],
-      title: json['title'],
-      body: json['body'],
-      code: json['code'],
-      codeLanguage: json['code_language'],
-      photoUrl: json['photo_url'],
+  /// كل حقل هون محمي بقيمة افتراضية (?? أو parsing دفاعي) - هيك الموديل
+  /// ما بينكسر لو الـ response جزئي (مثلاً endpoints زي إضافة/حذف صورة
+  /// ممكن ما ترجّع كل حقول البوست الكاملة زي comments_count/views_count).
+  factory PostModel.fromJson(Map<String, dynamic> json) {
+    return PostModel(
+      id: _readInt(json['id']),
+      title: json['title']?.toString() ?? '',
+      body: json['body']?.toString() ?? '',
+      code: json['code']?.toString(),
+      codeLanguage: json['code_language']?.toString(),
+      photoUrl: json['photo_url']?.toString(),
       photos:
           (json['photos'] as List<dynamic>?)
-              ?.map((e) => Photo.fromJson(e))
+              ?.map((e) => Photo.fromJson(Map<String, dynamic>.from(e)))
               .toList() ??
           [],
-      type: json['type'],
-      isPublished: json['is_published'],
-      isModified: json['is_modified'],
-      user: UserGeneralModel.fromJson(json['user']),
-      commentsCount: json['comments_count'],
-      likesCount: json['likes_count'],
-      viewsCount: json['views_count'],
-      isViewed: json['is_viewed'],
-      isSaved: json['is_saved'],
-      isLikedByUser: json['is_liked_by_user'],
+      type: json['type']?.toString() ?? '',
+      isPublished: json['is_published'] == true,
+      isModified: json['is_modified'] == true,
+      user: json['user'] != null
+          ? UserGeneralModel.fromJson(json['user'])
+          : UserGeneralModel.fromJson(const {}),
+      commentsCount: _readInt(json['comments_count']),
+      likesCount: _readInt(json['likes_count']),
+      viewsCount: _readInt(json['views_count']),
+      isViewed: json['is_viewed'] == true,
+      isSaved: json['is_saved'] == true,
+      isLikedByUser: json['is_liked_by_user'] == true,
       tags: _readTags(json['tags']),
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      createdAt: json['created_at']?.toString() ?? '',
+      updatedAt: json['updated_at']?.toString() ?? '',
     );
+  }
+
+  static int _readInt(dynamic value) {
+    if (value == null) return 0;
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    return int.tryParse(value.toString()) ?? 0;
   }
 
   static List<TagModel> _readTags(dynamic value) {
@@ -80,18 +92,17 @@ class PostSavedModel {
       if (value is List) {
         return value.map((e) {
           try {
-            return TagModel.fromJson(e);
+            return TagModel.fromJson(Map<String, dynamic>.from(e));
           } catch (_) {
-            // if tag is a plain string
             if (e is String) return TagModel(id: 0, name: e);
             return TagModel(id: 0, name: e.toString());
           }
         }).toList();
       }
-      // if server sends a single tag as string or map
       if (value is String) return [TagModel(id: 0, name: value)];
-      if (value is Map)
+      if (value is Map) {
         return [TagModel.fromJson(Map<String, dynamic>.from(value))];
+      }
     } catch (_) {}
     return <TagModel>[];
   }
@@ -104,7 +115,10 @@ class TagModel {
   TagModel({required this.id, required this.name});
 
   factory TagModel.fromJson(Map<String, dynamic> json) {
-    return TagModel(id: json['id'], name: json['name']);
+    return TagModel(
+      id: PostModel._readInt(json['id']),
+      name: json['name']?.toString() ?? '',
+    );
   }
 }
 
@@ -117,9 +131,9 @@ class Photo {
 
   factory Photo.fromJson(Map<String, dynamic> json) {
     return Photo(
-      id: json['id'],
-      url: json['url'],
-      sortOrder: json['sort_order'],
+      id: PostModel._readInt(json['id']),
+      url: json['url']?.toString() ?? '',
+      sortOrder: PostModel._readInt(json['sort_order']),
     );
   }
 }

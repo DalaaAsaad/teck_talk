@@ -1,78 +1,77 @@
-import 'dart:convert';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:dash_chat_2/dash_chat_2.dart';
+import 'package:flutter/foundation.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
-class ChatController extends GetxController {
-  final ChatUser currentUser =
-      ChatUser(id: "1", firstName: "You");
+class ChatBotController extends ChangeNotifier {
+  final ChatUser currentUser = ChatUser(id: '1', firstName: 'You');
+  final ChatUser botUser = ChatUser(id: '2', firstName: 'Tech Assistant');
 
-  final ChatUser botUser =
-      ChatUser(id: "2", firstName: "TechBot");
+  List<ChatMessage> messages = [];
+  bool isTyping = false;
 
-  RxList<ChatMessage> messages = <ChatMessage>[].obs;
+  static const String _apiKey = 'AQ.Ab8RN6IiNvA_QcbKj-aGn1Hl6E4qmLxipUOuMiLwS9be8Jw4FA';
 
-  final String apiKey = "YOUR_API_KEY";
+  late final GenerativeModel _model;
+  late final ChatSession _chat;
 
-  @override
-  void onInit() {
-    super.onInit();
+  ChatBotController() {
+    _model = GenerativeModel(
+      model: 'gemini-2.5-flash',
+      apiKey: _apiKey,
+      systemInstruction: Content.system('''
+    You are TechTalk Assistant, an AI helper embedded in TeckTalk — 
+    a social platform where developers and tech enthusiasts come together 
+    to ask questions, share knowledge, and solve technical problems.
 
-    messages.add(
-      ChatMessage(
-        user: botUser,
-        text:
-            "👋 Hi there! I'm TechTalk AI, your coding companion.\nHow can I help you today?",
-        createdAt: DateTime.now(),
-      ),
+    Your responsibilities:
+    - Help users debug code, explain errors, and suggest solutions
+    - Answer questions about programming languages, frameworks, tools, and best practices
+    - Guide users on how to use TeckTalk features (posting questions, tagging topics, etc.)
+    - Encourage users to share their solutions with the community
+    - Keep answers clear, structured, and beginner-friendly when needed
+
+    Rules:
+    - Stay focused on technical and app-related topics only
+    - If asked about something unrelated (politics, personal topics, etc.), 
+      politely redirect: "I'm here to help with technical questions on TechTalk 😊"
+    - Support both Arabic and English — respond in the same language the user writes in
+    - Use code blocks when sharing code snippets
+    '''),
     );
+
+    _chat = _model.startChat();
   }
 
-  Future<void> sendMessage(ChatMessage message) async {
-    messages.insert(0, message);
+  Future<void> onSend(ChatMessage message) async {
+    messages = [message, ...messages];
+    isTyping = true;
+    notifyListeners();
 
     try {
-      final response = await http.post(
-        Uri.parse(
-          "https://api.openai.com/v1/chat/completions",
-        ),
-        headers: {
-          "Authorization": "Bearer $apiKey",
-          "Content-Type": "application/json",
-        },
-        body: jsonEncode({
-          "model": "gpt-4o-mini",
-          "messages": [
-            {
-              "role": "user",
-              "content": message.text,
-            }
-          ]
-        }),
-      );
+      final response = await _chat.sendMessage(Content.text(message.text));
+      final responseText = response.text;
 
-      final data = jsonDecode(response.body);
-
-      final answer =
-          data["choices"][0]["message"]["content"];
-
-      messages.insert(
-        0,
-        ChatMessage(
-          user: botUser,
-          text: answer,
-          createdAt: DateTime.now(),
-        ),
-      );
+      if (responseText != null && responseText.isNotEmpty) {
+        messages = [
+          ChatMessage(user: botUser, createdAt: DateTime.now(), text: responseText),
+          ...messages,
+        ];
+      }
     } catch (e) {
-      messages.insert(
-        0,
-        ChatMessage(
-          user: botUser,
-          text: "Something went wrong.",
-          createdAt: DateTime.now(),
-        ),
-      );
+      String errorText;
+      if (e is UnsupportedUserLocation) {
+        errorText =
+            'Unable to access user location. Please enable location services and try again.';
+      } else {
+        errorText = 'Service is busy right now. Please try again in a few moments.';
+      }
+      messages = [
+        ChatMessage(user: botUser, createdAt: DateTime.now(), text: errorText),
+        ...messages,
+      ];
+    } finally {
+      isTyping = false;
+      notifyListeners();
     }
   }
 }

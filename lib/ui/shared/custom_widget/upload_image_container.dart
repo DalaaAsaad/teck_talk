@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tech_talk/core/utils/responsive.dart';
 import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
+import 'package:tech_talk/ui/shared/shared_widget/app_image_picker.dart';
 import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
@@ -17,119 +19,115 @@ class UploadImageContainer extends StatelessWidget {
     required this.text,
   });
 
+  Future<void> _pickImages() async {
+    final picked = await AppImagePicker.instance.pickMultiImage();
+    if (picked.isNotEmpty) {
+      images.addAll(picked);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       return Container(
-        constraints: BoxConstraints(
-          minHeight: screenWidth(3),
-          maxHeight: screenWidth(1.6),
-        ),
         width: double.infinity,
+        height: Responsive.hp(0.28),
         decoration: BoxDecoration(
-          border: Border.all(color: Appcolor.gray_60),
+          border: Border.all(color: Appcolor.muted),
           borderRadius: BorderRadius.circular(10),
         ),
+        clipBehavior: Clip.hardEdge,
         child: images.isEmpty
             ? _buildEmptyState()
             : Padding(
-                padding: EdgeInsetsDirectional.all(screenWidth(68)),
-                child: _buildImagesGrid(images),
+                padding: EdgeInsets.all(Responsive.wp(0.02)),
+                child: _buildImagesPageView(images),
               ),
       );
     });
   }
 
-  // 🔹 Empty UI
   Widget _buildEmptyState() {
     return GestureDetector(
-      onTap: () => pickImages(images),
+      onTap: _pickImages,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.image, color: Appcolor.yellow_70, size: screenWidth(13)),
-          SizedBox(height: screenWidth(51)),
+          Icon(Icons.image, color: Appcolor.accent, size: Responsive.sp(0.07)),
+          SizedBox(height: Responsive.hp(0.01)),
           CustomText(
             text: text,
             styleType: TextStyleType.BODY,
-            textColor: Appcolor.gray_60,
+            textColor: Appcolor.muted,
           ),
         ],
       ),
     );
   }
 
-  // 🔹 PageView بدل Grid
-  Widget _buildImagesGrid(List<XFile> images) {
-    return SizedBox(
-      height: screenWidth(1.6),
-      child: PageView.builder(
-        itemCount: images.length + 1,
-        itemBuilder: (context, index) {
-          if (index == images.length) {
-            return GestureDetector(
-              onTap: () => pickImages(images),
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: screenWidth(102)),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Appcolor.gray_60),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.add,
-                      color: Appcolor.white,
-                      size: screenWidth(10),
-                    ),
-                    SizedBox(height: screenWidth(51)),
-                    CustomText(
-                      text: "Add more",
-                      styleType: TextStyleType.SMALL,
-                      textColor: Appcolor.gray_60,
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
+  Widget _buildImagesPageView(List<XFile> images) {
+    return PageView.builder(
+      itemCount: images.length + 1,
+      itemBuilder: (context, index) {
+        if (index == images.length) {
+          return _buildAddMore();
+        }
 
-          return _buildImageItem(images[index], index);
-        },
+        return _buildImageItem(images[index], index);
+      },
+    );
+  }
+
+  Widget _buildAddMore() {
+    return GestureDetector(
+      onTap: _pickImages,
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: Responsive.wp(0.01)),
+        decoration: BoxDecoration(
+          border: Border.all(color: Appcolor.muted),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.add, color: Appcolor.white, size: Responsive.sp(0.07)),
+            SizedBox(height: Responsive.hp(0.01)),
+            CustomText(
+              text: "Add more",
+              styleType: TextStyleType.SMALL,
+              textColor: Appcolor.muted,
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildImageItem(XFile image, int index) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: screenWidth(102)),
+      margin: EdgeInsets.symmetric(horizontal: Responsive.wp(0.01)),
       child: Stack(
+        fit: StackFit.expand,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.file(
-              File(image.path),
-              width: double.infinity,
-              height: double.infinity,
-              fit: BoxFit.contain,
-            ),
+            child: Image.file(File(image.path), fit: BoxFit.cover),
           ),
 
           Positioned(
-            top: screenWidth(40),
-            right: screenWidth(40),
+            top: Responsive.wp(0.02),
+            right: Responsive.wp(0.02),
             child: GestureDetector(
               onTap: () => removeImage(index, images),
               child: Container(
-                padding: EdgeInsetsDirectional.all(screenWidth(68)),
+                padding: EdgeInsets.all(Responsive.wp(0.015)),
                 decoration: BoxDecoration(
                   color: Appcolor.black_08,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.close,
-                  size: screenWidth(25),
+                  size: Responsive.sp(0.045),
                   color: Appcolor.white,
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tech_talk/core/utils/responsive.dart';
 import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
 import 'package:tech_talk/ui/shared/shared_widget/utilies.dart'
     show screenWidth;
@@ -31,42 +32,42 @@ class CustomText extends StatelessWidget {
     switch (styleType) {
       case TextStyleType.TITLE:
         result = TextStyle(
-          fontSize: screenWidth(15),
+          fontSize: Responsive.sp(0.04),
           fontWeight: fontWeight ?? FontWeight.bold,
           color: textColor,
         );
         break;
       case TextStyleType.SUBTITLE:
         result = TextStyle(
-          fontSize: screenWidth(15),
+          fontSize: Responsive.sp(0.03),
           fontWeight: fontWeight ?? FontWeight.bold,
           color: textColor,
         );
         break;
       case TextStyleType.BODY:
         result = TextStyle(
-          fontSize: screenWidth(25),
+          fontSize: Responsive.sp(0.04),
           fontWeight: fontWeight ?? FontWeight.w400,
           color: textColor,
         );
         break;
       case TextStyleType.SMALL:
         result = TextStyle(
-          fontSize: screenWidth(30),
+          fontSize: Responsive.sp(0.03),
           fontWeight: fontWeight ?? FontWeight.w500,
           color: textColor,
         );
         break;
       case TextStyleType.CUSTOM:
         result = TextStyle(
-          fontSize: fontSize,
+          fontSize: fontSize ?? Responsive.sp(0.03),
           fontWeight: fontWeight ?? FontWeight.w500,
           color: textColor,
         );
         break;
       default:
         result = TextStyle(
-          fontSize: screenWidth(20),
+          fontSize: Responsive.sp(0.02),
           fontWeight: FontWeight.normal,
           color: textColor,
         );

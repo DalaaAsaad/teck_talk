@@ -1,5 +1,3 @@
-
-
 class AppRoutes {
   static const splash = '/splash';
   static const intro = '/intro';
@@ -17,5 +15,17 @@ class AppRoutes {
   static const profile = '/profile';
   static const comments = '/comments';
   static const childreenComments = '/childreenComments';
-
-  static const blog="/blog";}
+  static const chatbot = '/chatbot';
+  static const roadmaps = '/roadmaps';
+  static const RoadMapView = '/roadmapview';
+  static const myActivity = '/myActivity';
+  static const userPro = '/myActivity';
+  static const blog = "/blog";
+  static const userProfile = "/userProfile";
+  static const compiler = "/compiler";
+  static const editBlog = "/editBlog";
+  static const changePersonalInfo = "/changePersonalInfo";
+  static const settings = "/settings";
+  static const editPost = "/editPost";
+  static const notifications = "/notifications";
+}

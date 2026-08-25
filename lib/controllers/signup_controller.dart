@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tech_talk/app/my_routs.dart';
-import 'package:tech_talk/core/data/repository/shared_pref.dart';
 import 'package:tech_talk/core/data/repository/auth_repository.dart';
 import 'package:tech_talk/ui/shared/shared_widget/app_snackbar.dart';
 
 class SignupController extends GetxController {
-  final SharedPreferenceRepository _sharedPrefs = SharedPreferenceRepository();
-
   late TextEditingController fullNameController;
   late TextEditingController userNameController;
   late TextEditingController emailController;
@@ -58,9 +55,7 @@ class SignupController extends GetxController {
     final passwordConfirmation = confirmPasswordController.text;
 
     try {
-      // Call backend signup
       final authRepo = AuthRepository();
-      print(fullName);
       final result = await authRepo.signUp(
         name: fullName,
         email: email,
@@ -72,11 +67,10 @@ class SignupController extends GetxController {
       result.fold(
         (error) {
           AppSnackBar.error(error);
+          
         },
         (registerResponse) async {
-          // On success, navigate to OTP registration flow
-
-          Get.toNamed(AppRoutes.otp, arguments:  email);
+          Get.toNamed(AppRoutes.otp, arguments: email);
         },
       );
     } catch (e) {

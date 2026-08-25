@@ -1,65 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tech_talk/core/utils/responsive.dart';
 import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:tech_talk/ui/views/main_view/create_post/widgets/section_header.dart';
 import 'package:tech_talk/controllers/create_post_controller.dart';
+import 'package:tech_talk/ui/views/edit_profile/widgets/elevated_card.dart';
 
 class CodeSection extends GetView<CreatePostController> {
   const CodeSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SectionHeader(title: "Code"),
-        SizedBox(height: screenWidth(25)),
-        _buildLanguageSelector(),
-        SizedBox(height: screenWidth(40)),
-        _buildCodeInputBox(),
-      ],
-    );
-  }
-
-  Widget _buildLanguageSelector() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [_buildLanguageDropdown()],
+    return ElevatedCard(
+      title: "Code",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildLanguageDropdown(),
+          SizedBox(height: Responsive.hp(0.016)),
+          _buildCodeInputBox(),
+        ],
+      ),
     );
   }
 
   Widget _buildLanguageDropdown() {
     return DropdownMenu<String>(
-      width: screenWidth(1.7),
+      width: Responsive.wp(0.45),
       hintText: "Select Language",
       textStyle: TextStyle(
-        color: Appcolor.black_08,
-        fontSize: screenWidth(20),
+        color: Appcolor.white,
+        fontSize: Responsive.sp(0.036),
         fontWeight: FontWeight.w600,
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Appcolor.yellow_70,
+        fillColor: Appcolor.bg,
+        isDense: true,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: Responsive.wp(0.03),
+          vertical: Responsive.hp(0.01),
+        ),
         hintStyle: TextStyle(
-          color: Appcolor.black_08,
-          fontSize: screenWidth(21),
+          color: Appcolor.muted,
+          fontSize: Responsive.sp(0.036),
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Appcolor.yellow_70),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Appcolor.panelEdge),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Appcolor.yellow_70),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Appcolor.panelEdge),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Appcolor.yellow_70, width: 2),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Appcolor.accent, width: 1.4),
         ),
       ),
       menuStyle: MenuStyle(
-        backgroundColor: WidgetStatePropertyAll(Appcolor.gray_60),
-        alignment: Alignment.bottomCenter,
+        backgroundColor: WidgetStatePropertyAll(Appcolor.panel),
+        surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+        elevation: const WidgetStatePropertyAll(6),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+            side: BorderSide(color: Appcolor.panelEdge),
+          ),
+        ),
       ),
-      initialSelection: controller.selectedLanguage.value,
+      initialSelection: controller.selectedLanguage.value.isEmpty
+          ? null
+          : controller.selectedLanguage.value,
       onSelected: (String? value) {
         if (value != null) {
           controller.selectLanguage(value);
@@ -72,7 +83,7 @@ class CodeSection extends GetView<CreatePostController> {
           value: value,
           label: value,
           style: ButtonStyle(
-            foregroundColor: WidgetStatePropertyAll(Colors.white),
+            foregroundColor: WidgetStatePropertyAll(Appcolor.white),
           ),
         );
       }).toList(),
@@ -81,22 +92,29 @@ class CodeSection extends GetView<CreatePostController> {
 
   Widget _buildCodeInputBox() {
     return Container(
-      height: screenWidth(2),
-      decoration: BoxDecoration(
-        border: Border.all(color: Appcolor.yellow_70),
-        borderRadius: BorderRadius.circular(10),
+      height: Responsive.hp(0.22),
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.wp(0.032),
+        vertical: Responsive.hp(0.012),
       ),
-      child: Padding(
-        padding: EdgeInsetsDirectional.all(screenWidth(51)),
-        child: TextField(
-          controller: controller.codeController,
-          maxLines: null,
-          style: TextStyle(color: Appcolor.white),
-          decoration: InputDecoration(
-            hintText: "Paste your code here...",
-            hintStyle: TextStyle(color: Appcolor.white.withAlpha(200)),
-            border: InputBorder.none,
-          ),
+      decoration: BoxDecoration(
+        color: Appcolor.bg,
+        border: Border.all(color: Appcolor.panelEdge),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: TextField(
+        controller: controller.codeController,
+        maxLines: null,
+        style: TextStyle(
+          color: Appcolor.white,
+          fontFamily: 'monospace',
+          fontSize: Responsive.sp(0.036),
+        ),
+        decoration: InputDecoration(
+          hintText: "Paste your code here...",
+          hintStyle: TextStyle(color: Appcolor.muted),
+          border: InputBorder.none,
         ),
       ),
     );

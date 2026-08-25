@@ -1,49 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:tech_talk/core/utils/responsive.dart';
 import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class SectionHeader extends StatelessWidget {
   final String title;
+
   const SectionHeader({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Icon(
-          _getSectionIcon(title),
-          color: Appcolor.yellow_70,
-          size: screenWidth(12),
+        Container(
+          width: 3,
+          height: Responsive.hp(0.018),
+          decoration: BoxDecoration(
+            color: Appcolor.accent,
+            borderRadius: BorderRadius.circular(3),
+          ),
         ),
-        SizedBox(width: screenWidth(40)),
+        SizedBox(width: Responsive.wp(0.02)),
         CustomText(
           text: title,
           styleType: TextStyleType.CUSTOM,
-          fontSize: screenWidth(18),
-        ),
-        SizedBox(width: screenWidth(60)),
-        CustomText(
-          text: "(Optional)",
-          styleType: TextStyleType.SMALL,
-          textColor: Appcolor.white.withAlpha(180),
-          fontSize: screenWidth(19),
+          fontSize: Responsive.sp(0.04),
+          fontWeight: FontWeight.w700,
+          textColor: Appcolor.white,
         ),
       ],
     );
-  }
-}
-
-IconData _getSectionIcon(String section) {
-  switch (section) {
-    case "Code":
-      return Icons.code;
-    case "Images":
-      return Icons.photo_outlined;
-    case "Topics":
-      return Icons.grid_3x3;
-    default:
-      return Icons.help;
   }
 }

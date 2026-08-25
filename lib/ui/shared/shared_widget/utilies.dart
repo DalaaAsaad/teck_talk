@@ -5,32 +5,22 @@ import 'package:tech_talk/ui/shared/shared_widget/app_snackbar.dart';
 
 double screenWidth(double percent) {
   if (Get.height > Get.width) {
-    return Get.width / percent;
+    return Get.width * percent;
   } else {
-    return Get.height / percent;
+    return Get.height * percent;
   }
 }
 
-Future<void> pickImages(List<XFile> selectedImages) async {
-  final ImagePicker _picker = ImagePicker();
-  PermissionStatus status = await Permission.photos.status;
-  if (!status.isGranted) {
-    PermissionStatus requestStatus = await Permission.photos.request();
-    if (!requestStatus.isGranted) {
-      AppSnackBar.error('Cannot access gallery.', title: 'Permission denied');
-      return;
-    }
-  }
-  try {
-    final List<XFile> images = await _picker.pickMultiImage();
-    if (images.isNotEmpty) {
-      selectedImages.addAll(images);
-    }
-  } catch (e) {
-    AppSnackBar.error('Failed to pick images: $e');
+double screenHeight(double percent) {
+  if (Get.height > Get.width) {
+    return Get.height * percent;
+  } else {
+    return Get.width * percent;
   }
 }
 
-  void removeImage(int index, List<XFile> selectedImages) {
-    selectedImages.removeAt(index);
-  }
+
+
+void removeImage(int index, List<XFile> selectedImages) {
+  selectedImages.removeAt(index);
+}

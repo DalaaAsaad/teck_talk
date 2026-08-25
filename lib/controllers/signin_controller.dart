@@ -54,12 +54,12 @@ class SigninController extends GetxController {
             fullName: signInResponse.data.user.name,
             userName: signInResponse.data.user.username,
             email: signInResponse.data.user.email,
+            userId: signInResponse.data.user.id,
           );
           Get.offAllNamed('/mainView');
         },
       );
     } catch (e) {
-      print(e.toString());
       AppSnackBar.error('An error occurred');
     } finally {
       isLoading.value = false;
@@ -90,7 +90,6 @@ class SigninController extends GetxController {
         },
       );
     } catch (e) {
-      print(e.toString());
       AppSnackBar.error('An error occurred');
     } finally {
       isForgetPasswordLoading.value = false;

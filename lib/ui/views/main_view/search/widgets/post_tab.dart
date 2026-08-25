@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tech_talk/controllers/search_controller.dart';
+import 'package:tech_talk/core/utils/responsive.dart';
 import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:tech_talk/ui/views/main_view/search/widgets/post_card_search.dart';
+import 'package:tech_talk/ui/shared/custom_widget/post_card.dart';
 
 class PostTab extends GetView<Search_Controller> {
   const PostTab({super.key});
@@ -14,43 +14,93 @@ class PostTab extends GetView<Search_Controller> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // إذا بدك الفلاتر رجعيها:
         // _buildInlineFilters(),
         Expanded(child: _buildPostsList()),
       ],
     );
   }
 
+  // ============================================================
+  // POSTS LIST
+  // ============================================================
+
   Widget _buildPostsList() {
     return Obx(() {
-      final filteredPosts = controller.posts;
+      final posts = controller.posts;
 
-      // Show "No posts found" only after loading completes and posts are empty
+      // No results
       if (!controller.isLoading.value &&
-          filteredPosts.isEmpty &&
+          posts.isEmpty &&
           controller.isSearching) {
         return Center(
-          child: CustomText(
-            text: 'No posts found for this search',
-            styleType: TextStyleType.BODY,
-            textColor: Appcolor.gray_60,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: Responsive.wp(0.08)),
+            child: CustomText(
+              text: 'No posts found for this search',
+              styleType: TextStyleType.BODY,
+              textColor: Appcolor.muted,
+            ),
+          ),
+        );
+      }
+
+      // Loading
+      if (controller.isLoading.value && posts.isEmpty) {
+        return Center(
+          child: SizedBox(
+            width: Responsive.wp(0.07),
+            height: Responsive.wp(0.07),
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: Appcolor.accent,
+            ),
           ),
         );
       }
 
       return ListView.builder(
-        padding: EdgeInsets.only(bottom: screenWidth(6)),
-        itemCount: filteredPosts.length,
+        physics: const BouncingScrollPhysics(),
+        padding: EdgeInsets.only(
+          top: Responsive.hp(0.008),
+          bottom: Responsive.hp(0.12),
+        ),
+        itemCount: posts.length,
         itemBuilder: (context, index) {
-          return PostCardSearch(
-            post: filteredPosts[index],
-            onFavorite: () {},
-            onComment: () {},
-            onSaved: () {},
+          final post = posts[index];
+
+          return PostCard(
+            userName: post.user.name,
+            userAvatarUrl: post.user.avatarUrl,
+            createdAt: post.createdAt,
+            title: post.title,
+            body: post.body,
+            tags: post.tags.map((e) => e.name).toList(),
+            photoUrls: post.photos.map((p) => p.url).toList(),
+            code: post.code,
+            codeLanguage: post.codeLanguage,
+            likesCount: post.likesCount,
+            commentsCount: post.commentsCount,
+            viewsCount: post.viewsCount,
+            isLikedByUser: post.isLikedByUser,
+            isSaved: post.isSaved,
+            isOwner: posts[index].user.id == controller.currentUserId,
+            onFavorite: () => controller.toggleFavorite(post),
+            onComment: () => controller.toggleComment(post),
+            onSaved: () => controller.toggleSaved(post),
+            onEdit: () {},
+            onDelete: () => controller.toggleDelete(post),
+            // dense: true,
+            showDivider: index != posts.length - 1,
           );
         },
       );
     });
   }
+
+  // ============================================================
+  // FILTERS
+  // ============================================================
 
   Widget _buildInlineFilters() {
     return Obx(
@@ -59,47 +109,64 @@ class PostTab extends GetView<Search_Controller> {
         children: [
           InkWell(
             onTap: controller.toggleFilters,
+            borderRadius: BorderRadius.circular(Responsive.wp(0.025)),
             child: Padding(
-              padding: EdgeInsetsDirectional.only(top: screenWidth(30)),
+              padding: EdgeInsets.only(top: Responsive.hp(0.012)),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CustomText(
                     text: "Apply filters",
-                    textColor: Appcolor.yellow_70,
+                    textColor: Appcolor.accent,
                     styleType: TextStyleType.BODY,
                   ),
-                  SizedBox(width: screenWidth(80)),
+
+                  SizedBox(width: Responsive.wp(0.02)),
+
                   Icon(
                     controller.isShowFilters.value
-                        ? Icons.keyboard_arrow_up
-                        : Icons.keyboard_arrow_down,
-                    color: Appcolor.yellow_70,
-                    size: screenWidth(18),
+                        ? Icons.keyboard_arrow_up_rounded
+                        : Icons.keyboard_arrow_down_rounded,
+                    color: Appcolor.accent,
+                    size: Responsive.sp(0.055),
                   ),
                 ],
               ),
             ),
           ),
+
           if (controller.isShowFilters.value) ...[
             _buildFilterChips(),
+
             if (controller.selectedFilters.isNotEmpty)
               Padding(
-                padding: EdgeInsets.only(top: screenWidth(45)),
+                padding: EdgeInsets.only(
+                  top: Responsive.hp(0.015),
+                  bottom: Responsive.hp(0.01),
+                ),
                 child: Row(
                   children: [
                     CustomText(
                       text: '${controller.selectedFilters.length} selected',
                       styleType: TextStyleType.BODY,
-                      textColor: Appcolor.gray_60,
+                      textColor: Appcolor.muted,
                     ),
+
                     const Spacer(),
+
                     InkWell(
                       onTap: controller.clearSelectedFilters,
-                      child: CustomText(
-                        text: 'Clear',
-                        styleType: TextStyleType.BODY,
-                        textColor: Appcolor.yellow_70,
+                      borderRadius: BorderRadius.circular(8),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: Responsive.wp(0.02),
+                          vertical: Responsive.hp(0.006),
+                        ),
+                        child: CustomText(
+                          text: 'Clear',
+                          styleType: TextStyleType.BODY,
+                          textColor: Appcolor.accent,
+                        ),
                       ),
                     ),
                   ],
@@ -111,37 +178,41 @@ class PostTab extends GetView<Search_Controller> {
     );
   }
 
+  // ============================================================
+  // FILTER CHIPS
+  // ============================================================
+
   Widget _buildFilterChips() {
     return Container(
       width: double.infinity,
-      padding: EdgeInsetsDirectional.only(top: screenWidth(30)),
+      padding: EdgeInsets.only(top: Responsive.hp(0.012)),
       child: Wrap(
-        spacing: screenWidth(55),
-        runSpacing: screenWidth(55),
+        spacing: Responsive.wp(0.02),
+        runSpacing: Responsive.hp(0.01),
         children: controller.allFilters.map((filter) {
           final isSelected = controller.selectedFilters.contains(filter);
+
           return InkWell(
             onTap: () => controller.toggleFilter(filter),
             borderRadius: BorderRadius.circular(999),
             child: Container(
               padding: EdgeInsets.symmetric(
-                horizontal: screenWidth(28),
-                vertical: screenWidth(65),
+                horizontal: Responsive.wp(0.035),
+                vertical: Responsive.hp(0.008),
               ),
               decoration: BoxDecoration(
-                color: isSelected ? Appcolor.yellow_70 : Appcolor.yellow_90,
+                color: isSelected ? Appcolor.accent : Appcolor.panel,
                 borderRadius: BorderRadius.circular(999),
                 border: Border.all(
-                  color: isSelected
-                      ? Appcolor.yellow_70
-                      : Appcolor.yellow_90.withAlpha(180),
+                  color: isSelected ? Appcolor.accent : Appcolor.panelEdge,
+                  width: 1,
                 ),
                 boxShadow: isSelected
                     ? [
                         BoxShadow(
-                          color: Appcolor.yellow_70.withAlpha(40),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
+                          color: Appcolor.accent.withOpacity(0.20),
+                          blurRadius: 10,
+                          offset: const Offset(0, 3),
                         ),
                       ]
                     : null,
@@ -149,7 +220,7 @@ class PostTab extends GetView<Search_Controller> {
               child: CustomText(
                 text: filter,
                 styleType: TextStyleType.BODY,
-                textColor: Appcolor.black_08,
+                textColor: isSelected ? Appcolor.white : Appcolor.muted,
               ),
             ),
           );

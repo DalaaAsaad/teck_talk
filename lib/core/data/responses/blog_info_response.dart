@@ -13,9 +13,11 @@ class BlogInfoResponse {
 
   factory BlogInfoResponse.fromJson(Map<String, dynamic> json) {
     return BlogInfoResponse(
-      status: json['status'],
-      message: json['message'],
-      data: BlogInfoData.fromJson(json['data']),
+      status: json['status']?.toString() ?? '',
+      message: json['message']?.toString() ?? '',
+      data: BlogInfoData.fromJson(
+        json['data'] as Map<String, dynamic>? ?? {},
+      ),
     );
   }
 }
@@ -37,8 +39,8 @@ class BlogInfoData {
   final bool isViewed;
   bool isSaved;
   final List<Section> sections;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   BlogInfoData({
     required this.id,
@@ -57,33 +59,51 @@ class BlogInfoData {
     required this.isViewed,
     required this.isSaved,
     required this.sections,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
   });
 
+  /// كل حقل هون محمي بقيمة افتراضية - نفس أسلوب PostModel/ProfileData.
+  /// أهم نقطة: sections/tags ممكن يرجعوا null بردود اللستة (بعكس رد
+  /// تفاصيل بلوغ وحدة يلي بيرجعهم كاملين) - هيك كان سبب الـ TypeError.
   factory BlogInfoData.fromJson(Map<String, dynamic> json) {
     return BlogInfoData(
-      id: json['id'],
-      title: json['title'],
-      subtitle: json['subtitle'],
-      coverImageUrl: json['cover_image_url'],
-      readingTime: json['reading_time'],
-      isPublished: json['is_published'],
-      isModified: json['is_modified'],
-      user: UserGeneralModel.fromJson(json['user']),
-      commentsCount: json['comments_count'],
-      likesCount: json['likes_count'],
-      isLikedByUser: json['is_liked_by_user'],
-      tags: (json['tags'] as List).map((e) => Tag.fromJson(e)).toList(),
-      viewsCount: json['views_count'],
-      isViewed: json['is_viewed'],
-      isSaved: json['is_saved'],
-      sections: (json['sections'] as List)
-          .map((e) => Section.fromJson(e))
+      id: _readInt(json['id']),
+      title: json['title']?.toString() ?? '',
+      subtitle: json['subtitle']?.toString() ?? '',
+      coverImageUrl: json['cover_image_url']?.toString(),
+      readingTime: json['reading_time']?.toString(),
+      isPublished: json['is_published'] == true,
+      isModified: json['is_modified'] == true,
+      user: json['user'] != null
+          ? UserGeneralModel.fromJson(json['user'])
+          : UserGeneralModel.fromJson(const {}),
+      commentsCount: _readInt(json['comments_count']),
+      likesCount: _readInt(json['likes_count']),
+      isLikedByUser: json['is_liked_by_user'] == true,
+      tags: (json['tags'] as List<dynamic>? ?? [])
+          .map((e) => Tag.fromJson(Map<String, dynamic>.from(e)))
           .toList(),
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
+      viewsCount: _readInt(json['views_count']),
+      isViewed: json['is_viewed'] == true,
+      isSaved: json['is_saved'] == true,
+      sections: (json['sections'] as List<dynamic>? ?? [])
+          .map((e) => Section.fromJson(Map<String, dynamic>.from(e)))
+          .toList(),
+      createdAt: json['created_at'] != null
+          ? DateTime.tryParse(json['created_at'].toString())
+          : null,
+      updatedAt: json['updated_at'] != null
+          ? DateTime.tryParse(json['updated_at'].toString())
+          : null,
     );
+  }
+
+  static int _readInt(dynamic value) {
+    if (value == null) return 0;
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    return int.tryParse(value.toString()) ?? 0;
   }
 }
 
@@ -94,7 +114,10 @@ class Tag {
   Tag({required this.id, required this.name});
 
   factory Tag.fromJson(Map<String, dynamic> json) {
-    return Tag(id: json['id'], name: json['name']);
+    return Tag(
+      id: BlogInfoData._readInt(json['id']),
+      name: json['name']?.toString() ?? '',
+    );
   }
 }
 
@@ -115,11 +138,11 @@ class Section {
 
   factory Section.fromJson(Map<String, dynamic> json) {
     return Section(
-      id: json['id'],
-      title: json['title'],
-      content: json['content'],
-      order: json['order'],
-      imageUrl: json['image_url'],
+      id: BlogInfoData._readInt(json['id']),
+      title: json['title']?.toString() ?? '',
+      content: json['content']?.toString() ?? '',
+      order: json['order']?.toString() ?? '',
+      imageUrl: json['image_url']?.toString(),
     );
   }
 }

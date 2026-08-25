@@ -1,31 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:tech_talk/core/data/models/user_general_model.dart';
+import 'package:tech_talk/core/utils/responsive.dart';
 import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class AccountCard extends StatelessWidget {
   final UserGeneralModel account;
+
   const AccountCard({super.key, required this.account});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(screenWidth(28)),
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.wp(0.032),
+        vertical: Responsive.hp(0.010),
+      ),
       decoration: BoxDecoration(
-        color: Appcolor.Black_05,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Appcolor.gray_60.withAlpha(70), width: 0.8),
+        color: Appcolor.panel,
+        borderRadius: BorderRadius.circular(Responsive.wp(0.04)),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // =========================
+          // Avatar
+          // =========================
           CircleAvatar(
-            radius: screenWidth(15),
-            backgroundImage: NetworkImage(account.avatarUrl),
+            radius: Responsive.wp(0.048),
+            backgroundColor: Appcolor.bg,
+            backgroundImage: account.avatarUrl.isNotEmpty
+                ? NetworkImage(account.avatarUrl)
+                : null,
             onBackgroundImageError: (_, __) {},
-            child: account.avatarUrl.isEmpty ? Icon(Icons.person) : null,
+            child: account.avatarUrl.isEmpty
+                ? Icon(
+                    Icons.person_rounded,
+                    color: Appcolor.muted,
+                    size: Responsive.sp(0.045),
+                  )
+                : null,
           ),
-          SizedBox(width: screenWidth(35)),
+
+          SizedBox(width: Responsive.wp(0.03)),
+
+          // =========================
+          // User information
+          // =========================
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,47 +56,70 @@ class AccountCard extends StatelessWidget {
                 CustomText(
                   text: account.name,
                   styleType: TextStyleType.CUSTOM,
-                  fontSize: screenWidth(20),
-                  fontWeight: FontWeight.w700,
+                  fontSize: Responsive.sp(0.037),
+                  fontWeight: FontWeight.w600,
+                  textColor: Appcolor.white,
                 ),
-                SizedBox(height: screenWidth(90)),
+                SizedBox(height: Responsive.hp(0.003)),
                 CustomText(
-                  text: account.username,
+                  text: '@${account.username}',
                   styleType: TextStyleType.BODY,
-                  textColor: Appcolor.gray_60,
+                  textColor: Appcolor.muted,
+                  fontSize: Responsive.sp(0.03),
                 ),
               ],
             ),
           ),
-          SizedBox(width: screenWidth(35)),
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: screenWidth(30),
-              vertical: screenWidth(30),
-            ),
-            decoration: BoxDecoration(
-              color: Appcolor.black_08,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Appcolor.gray_60.withAlpha(50)),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CustomText(
-                  text: 'Follow',
-                  styleType: TextStyleType.BODY,
-                  textColor: Appcolor.gray_60,
-                ),
-                SizedBox(width: screenWidth(50)),
-                Icon(
-                  Icons.add,
-                  color: Appcolor.yellow_70,
-                  size: screenWidth(15),
-                ),
-              ],
-            ),
-          ),
+
+          SizedBox(width: Responsive.wp(0.02)),
+
+          // =========================
+          // Follow button
+          // =========================
+          const _FollowButton(),
         ],
+      ),
+    );
+  }
+}
+
+class _FollowButton extends StatelessWidget {
+  const _FollowButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(999),
+        onTap: () {},
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: Responsive.wp(0.026),
+            vertical: Responsive.hp(0.007),
+          ),
+          decoration: BoxDecoration(
+            color: Appcolor.accentDim,
+            borderRadius: BorderRadius.circular(999),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomText(
+                text: 'Follow',
+                styleType: TextStyleType.SMALL,
+                fontWeight: FontWeight.w600,
+                textColor: Appcolor.accent,
+              ),
+              SizedBox(width: Responsive.wp(0.008)),
+              Icon(
+                Icons.add_rounded,
+                color: Appcolor.accent,
+                size: Responsive.sp(0.032),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

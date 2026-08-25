@@ -1,72 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
-import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 import 'package:tech_talk/controllers/create_post_controller.dart';
-import 'package:tech_talk/ui/views/main_view/create_post/widgets/section_header.dart';
+import 'package:tech_talk/ui/views/edit_blog/widgets/tags_field.dart';
+import 'package:tech_talk/ui/views/edit_blog/widgets/tags_picker_sheet.dart';
+import 'package:tech_talk/ui/views/edit_profile/widgets/elevated_card.dart';
 
 class TopicesSection extends GetView<CreatePostController> {
   const TopicesSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Section header
-          SectionHeader(title: "Topics"),
-          SizedBox(height: screenWidth(68)),
+    return ElevatedCard(
+      title: "Topics",
+      child: Obx(() {
+        final selectedNames = controller.tags
+            .where((tag) => controller.selectedTagIds.contains(tag.id))
+            .map((tag) => tag.name)
+            .toList();
 
-          CustomText(
-            text: "Add topics (e.g., React, JavaScript)",
-            styleType: TextStyleType.BODY,
-            textColor: Appcolor.gray_60,
+        return TagsField(
+          selectedTagNames: selectedNames,
+          onTap: () => showTagsPickerSheet(
+            availableTags: controller.tags,
+            selectedTagIds: controller.selectedTagIds,
+            isLoadingTags: controller.isTagsLoading,
           ),
-          SizedBox(height: screenWidth(40)),
-
-          // Chips row + plus button
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              // Selected topic chips
-              ...controller.selectedTopics.map(
-                (topic) => Chip(
-                  backgroundColor: Appcolor.yellow_70,
-                  label: CustomText(
-                    text: topic,
-                    styleType: TextStyleType.CUSTOM,
-                    textColor: Appcolor.black_08,
-                  ),
-                  deleteIcon: Icon(
-                    Icons.close,
-                    size: screenWidth(20),
-                    color: Appcolor.black_08,
-                  ),
-                  onDeleted: () => controller.toggleTopic(topic),
-                ),
-              ),
-
-              // Plus button
-              Builder(
-                builder: (btnContext) => GestureDetector(
-                  onTap: () => controller.showTopicsDialog(btnContext),
-                  child: Container(
-                    child: Icon(
-                      Icons.add,
-                      color: Appcolor.yellow_70,
-                      size: screenWidth(10),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+        );
+      }),
     );
   }
 }

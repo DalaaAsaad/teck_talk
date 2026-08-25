@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tech_talk/controllers/profile_controller.dart';
+import 'package:tech_talk/core/utils/responsive.dart';
 import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
-import 'package:tech_talk/ui/views/main_view/profile/widgets/bio_profile.dart';
-import 'package:tech_talk/ui/views/main_view/profile/widgets/button_profile.dart';
-import 'package:tech_talk/ui/views/main_view/profile/widgets/social_item.dart';
+import 'package:tech_talk/ui/views/main_view/profile/widgets/profile_action_row.dart';
+import 'package:tech_talk/ui/views/main_view/profile/widgets/profile_hero.dart';
+import 'package:tech_talk/ui/views/main_view/profile/widgets/profile_merged_info.dart';
+import 'package:tech_talk/ui/views/main_view/profile/widgets/profile_more_section.dart';
 import 'package:tech_talk/ui/views/main_view/profile/widgets/tabbar_profile.dart';
 import 'package:tech_talk/ui/views/main_view/profile/widgets/top_profile.dart';
-import 'package:tech_talk/ui/views/main_view/profile/widgets/user_info_profile.dart';
-import 'package:tech_talk/ui/views/main_view/profile/widgets/xpbar_profile.dart';
 
 class Profile extends GetView<ProfileController> {
   const Profile({super.key});
@@ -18,35 +17,49 @@ class Profile extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Obx(() {
       if (controller.isLoading.value || controller.profileData.value == null) {
-        return const Scaffold(
-          backgroundColor: Colors.transparent,
+        return Scaffold(
+          backgroundColor: Appcolor.bg,
           body: Center(
-            child: CircularProgressIndicator(color: Appcolor.yellow_70),
+            child: CircularProgressIndicator(color: Appcolor.accent),
           ),
         );
       }
 
+      final profile = controller.profileData.value!;
+
       return DefaultTabController(
         length: 2,
         child: Scaffold(
-          backgroundColor: Appcolor.black_08,
+          backgroundColor: Appcolor.bg,
           body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsetsDirectional.only(
-                      start: screenWidth(20),
-                      end: screenWidth(40),
+                      start: Responsive.wp(0.045),
+                      end: Responsive.wp(0.045),
+                      top: Responsive.hp(0.012),
                     ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TopProfile(),
-                        UserInfoProfile(),
-                        BioProfile(),
-                        XpbarProfile(),
-                        ButtonProfile(),
-                        rowSocialItem(),
+                        ProfileHero(
+                          avatarUrl: profile.avatarUrl,
+                          coverImageUrl: profile.coverImageUrl,
+                          badge: profile.badge,
+                          topRightAction: const TopProfile(),
+                        ),
+                        const ProfileMergedInfo(),
+                        SizedBox(height: Responsive.hp(0.012)),
+                        const ProfileActionRow(),
+                        SizedBox(height: Responsive.hp(0.01)),
+                        const ProfileMoreSection(),
+                        SizedBox(height: Responsive.hp(0.016)),
+                        Container(
+                          height: 1,
+                          color: Appcolor.panelEdge.withOpacity(0.5),
+                        ),
                       ],
                     ),
                   ),
@@ -59,16 +72,4 @@ class Profile extends GetView<ProfileController> {
       );
     });
   }
-}
-
-Widget rowSocialItem() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: [
-      SocialItem(iconPath: 'assets/images/png/facebook.png'),
-      SocialItem(iconPath: 'assets/images/png/insta.png'),
-      SocialItem(iconPath: 'assets/images/png/Twitter.png', tintWhite: true),
-      SocialItem(iconPath: 'assets/images/png/reddit.png'),
-    ],
-  );
 }

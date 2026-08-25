@@ -15,7 +15,18 @@ class Comments extends GetView<CommentsController> {
       child: Scaffold(
         backgroundColor: Appcolor.black_08,
         body: Column(
-          children: [HeaderComments(), BodyComments(), SendBoxComment()],
+          children: [
+            HeaderComments(),
+            BodyComments(),
+            SendBoxComment(
+              onSend: controller.commentPost,
+              typeController: controller.typeController,
+              codeController: controller.codeController,
+              mentionUsers: controller.mentionUsers,
+              showMentionList: controller.showMentionList,
+              onMentionTap: controller.selectMentionUser,
+            ),
+          ],
         ),
       ),
     );

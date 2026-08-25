@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tech_talk/controllers/comments_controller.dart';
-import 'package:tech_talk/ui/shared/custom_widget/active_icon.dart';
+import 'package:tech_talk/core/utils/responsive.dart';
 import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class HeaderComments extends GetView<CommentsController> {
   const HeaderComments({super.key});
@@ -13,9 +12,9 @@ class HeaderComments extends GetView<CommentsController> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsetsDirectional.only(
-        top: screenWidth(15),
-        start: screenWidth(20),
-        end: screenWidth(10),
+        top: Responsive.hp(0.03),
+        start: Responsive.wp(0.04),
+        end: Responsive.wp(0.02),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -23,29 +22,39 @@ class HeaderComments extends GetView<CommentsController> {
           Row(
             children: [
               Obx(
-                () => CustomText(
-                  text: controller.comments.length.toString(),
-                  styleType: TextStyleType.BODY,
-                  textColor: Appcolor.white.withAlpha(150),
+                () => Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Responsive.wp(0.04),
+                    vertical: Responsive.hp(0.005),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Appcolor.accent,
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Appcolor.accent.withAlpha(100),
+                        blurRadius: 10,
+                        offset: Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: CustomText(
+                    text: controller.comments.length.toString(),
+                    styleType: TextStyleType.CUSTOM,
+                    fontSize: Responsive.sp(0.06),
+                    textColor: Appcolor.white,
+                  ),
                 ),
               ),
               CustomText(
-                text: "   Comments",
-                styleType: TextStyleType.BODY,
+                text: "     //....  Comments",
+                styleType: TextStyleType.CUSTOM,
+                fontSize: Responsive.sp(0.05),
                 textColor: Appcolor.white.withAlpha(150),
               ),
             ],
           ),
-          // ActiveIcon(
-          //   icon: Icon(Icons.favorite_border),
-          //   iconIsActive: Icon(Icons.favorite),
-          //   numOfInteractors: controller.formatEngagement(
-          //     controller.likesCount,
-          //   ),
-          //   color: Appcolor.red,
-          //   isActive: controller.isLikedByUser,
-          //   function: () {},
-          // ),
+   
         ],
       ),
     );

@@ -9,9 +9,10 @@ class TabIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tab(
+      height: 34,
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: [Icon(icon), Text(label)],
+        children: [Icon(icon, size: 14), const SizedBox(width: 5), Text(label)],
       ),
     );
   }

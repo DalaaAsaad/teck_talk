@@ -1,69 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get/get.dart';
 import 'package:tech_talk/controllers/profile_controller.dart';
+import 'package:tech_talk/core/utils/responsive.dart';
 import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
-
-enum ProfileMenuAction { activity, settings, logout }
 
 class TopProfile extends GetView<ProfileController> {
   const TopProfile({super.key});
-  void _onMenuSelected(ProfileMenuAction action) {
-    switch (action) {
-      case ProfileMenuAction.activity:
-        // TODO: connect to activity screen
-        break;
-      case ProfileMenuAction.settings:
-        // TODO: connect to settings screen
-        break;
-      case ProfileMenuAction.logout:
-        // TODO: connect to logout flow
-        break;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    final profile = controller.profileData.value;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        CustomText(
-          text: profile?.username ?? "",
-          styleType: TextStyleType.CUSTOM,
-          fontSize: screenWidth(20),
-          fontWeight: FontWeight.w300,
+    return PopupMenuButton<ProfileMenuAction>(
+      color: Appcolor.panel,
+      onSelected: controller.onMenuSelected,
+      icon: Container(
+        width: Responsive.wp(0.09),
+        height: Responsive.wp(0.09),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Appcolor.bg.withOpacity(0.7),
+          shape: BoxShape.circle,
+          border: Border.all(color: Appcolor.panelEdge),
         ),
-        Theme(
-          data: Theme.of(context).copyWith(
-            popupMenuTheme: PopupMenuThemeData(
-              color: const Color(0xFF2B2B2B),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-            ),
+        child: Icon(
+          Icons.more_vert_rounded,
+          color: Appcolor.white,
+          size: Responsive.sp(0.05),
+        ),
+      ),
+      elevation: 6,
+      shadowColor: Colors.black.withOpacity(0.3),
+      surfaceTintColor: Appcolor.panel,
+      position: PopupMenuPosition.under,
+      offset: Offset(0, Responsive.hp(0.01)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      constraints: BoxConstraints(minWidth: Responsive.wp(0.44)),
+      itemBuilder: (context) => [
+        PopupMenuItem<ProfileMenuAction>(
+          value: ProfileMenuAction.activity,
+          height: Responsive.hp(0.06),
+          child: _MenuItemRow(
+            icon: Icons.timeline_rounded,
+            label: 'My Activity',
           ),
-          child: PopupMenuButton<ProfileMenuAction>(
-            color: Appcolor.dark_20,
-            onSelected: _onMenuSelected,
-            icon: Icon(Icons.more_vert, color: Appcolor.gray_95),
-            elevation: 8,
-            position: PopupMenuPosition.under,
-            itemBuilder: (context) => [
-              PopupMenuItem<ProfileMenuAction>(
-                value: ProfileMenuAction.activity,
-                child: _MenuItemRow(icon: Icons.timeline, label: 'My Activity'),
-              ),
-              PopupMenuItem<ProfileMenuAction>(
-                value: ProfileMenuAction.settings,
-                child: _MenuItemRow(icon: Icons.settings, label: 'Settings'),
-              ),
-              PopupMenuItem<ProfileMenuAction>(
-                value: ProfileMenuAction.logout,
-                child: _MenuItemRow(icon: Icons.logout, label: 'Log Out'),
-              ),
-            ],
+        ),
+        PopupMenuItem<ProfileMenuAction>(
+          value: ProfileMenuAction.settings,
+          height: Responsive.hp(0.06),
+          child: _MenuItemRow(icon: Icons.settings_rounded, label: 'Settings'),
+        ),
+        PopupMenuItem<ProfileMenuAction>(
+          value: ProfileMenuAction.logout,
+          height: Responsive.hp(0.06),
+          child: _MenuItemRow(
+            icon: Icons.logout_rounded,
+            label: 'Log Out',
+            iconColor: const Color(0xFFE05C5C),
+            labelColor: const Color(0xFFE05C5C),
           ),
         ),
       ],
@@ -72,23 +65,50 @@ class TopProfile extends GetView<ProfileController> {
 }
 
 class _MenuItemRow extends StatelessWidget {
-  const _MenuItemRow({required this.icon, required this.label});
+  const _MenuItemRow({
+    required this.icon,
+    required this.label,
+    this.iconColor,
+    this.labelColor,
+  });
 
   final IconData icon;
   final String label;
+  final Color? iconColor;
+  final Color? labelColor;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon, color: Appcolor.yellow_70, size: 18),
-        SizedBox(width: screenWidth(45)),
-        CustomText(
-          text: label,
-          styleType: TextStyleType.BODY,
-          textColor: Appcolor.white,
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.wp(0.03),
+        vertical: Responsive.hp(0.004),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: Responsive.wp(0.075),
+            height: Responsive.wp(0.075),
+            decoration: BoxDecoration(
+              color: Appcolor.accentDim,
+              shape: BoxShape.circle,
+            ),
+            alignment: Alignment.center,
+            child: Icon(
+              icon,
+              color: iconColor ?? Appcolor.accent,
+              size: Responsive.sp(0.036),
+            ),
+          ),
+          SizedBox(width: Responsive.wp(0.03)),
+          CustomText(
+            text: label,
+            styleType: TextStyleType.SMALL,
+            textColor: labelColor ?? Appcolor.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ],
+      ),
     );
   }
 }

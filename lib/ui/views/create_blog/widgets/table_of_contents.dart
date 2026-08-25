@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
+import 'package:tech_talk/core/utils/responsive.dart';
 import 'package:tech_talk/ui/shared/custom_widget/custom_text.dart';
 import 'package:tech_talk/ui/shared/shared_widget/appcolor.dart';
-import 'package:tech_talk/ui/shared/shared_widget/utilies.dart';
 
 class TableOfContents extends StatelessWidget {
   const TableOfContents({
+    super.key,
     required this.index,
     required this.title,
     required this.onDelete,
@@ -32,103 +34,143 @@ class TableOfContents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: screenWidth(38),
-        vertical: screenWidth(36),
+        horizontal: Responsive.wp(0.025),
+        vertical: Responsive.wp(0.02),
       ),
+      margin: EdgeInsets.symmetric(
+        horizontal: Responsive.wp(0.025),
+        vertical: Responsive.wp(0.02),
+      ),
+
       decoration: BoxDecoration(
-        color: Appcolor.Black_05,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Appcolor.dark_20.withAlpha(90)),
+        color: Appcolor.panel,
+        borderRadius: BorderRadius.circular(Responsive.wp(0.03)),
+        border: Border.all(
+          color: isEditing ? Appcolor.accent : Appcolor.panelEdge,
+          width: Responsive.wp(0.0025),
+        ),
       ),
+
       child: Row(
         children: [
-          Icon(Icons.drag_indicator_rounded, color: Appcolor.gray_60),
-          SizedBox(width: screenWidth(18)),
+          Icon(
+            Icons.drag_indicator_rounded,
+            color: Appcolor.muted,
+            size: Responsive.sp(0.055),
+          ),
+
+          SizedBox(width: Responsive.wp(0.035)),
+
           Container(
-            width: screenWidth(16),
-            height: screenWidth(16),
+            width: Responsive.wp(0.09),
+            height: Responsive.wp(0.09),
+
             decoration: BoxDecoration(
-              color: Appcolor.black_08,
-              border: Border.all(color: Appcolor.yellow_70),
-              borderRadius: BorderRadius.circular(4),
+              color: Appcolor.accentDim,
+              borderRadius: BorderRadius.circular(Responsive.wp(0.02)),
             ),
+
             alignment: Alignment.center,
+
             child: CustomText(
               text: '${index + 1}',
               styleType: TextStyleType.CUSTOM,
-              textColor: Appcolor.yellow_70,
-              fontSize: screenWidth(34),
+              textColor: Appcolor.accent,
+              fontSize: Responsive.sp(0.038),
               fontWeight: FontWeight.w700,
             ),
           ),
-          SizedBox(width: screenWidth(18)),
+
+          SizedBox(width: Responsive.wp(0.035)),
+
           Expanded(
             child: isEditing
                 ? TextField(
                     controller: controller,
                     autofocus: true,
+                    cursorColor: Appcolor.accent,
+
                     style: TextStyle(
-                      color: Appcolor.gray_95,
-                      fontSize: screenWidth(28),
+                      color: Appcolor.white,
+                      fontSize: Responsive.sp(0.037),
                       fontWeight: FontWeight.w500,
                     ),
-                    decoration: InputDecoration(
+
+                    decoration: const InputDecoration(
                       isDense: true,
                       contentPadding: EdgeInsets.zero,
                       border: InputBorder.none,
                     ),
+
                     onSubmitted: (_) => onSave(),
                   )
                 : Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    padding: EdgeInsets.symmetric(
+                      vertical: Responsive.wp(0.01),
+                    ),
+
                     child: CustomText(
                       text: title,
                       styleType: TextStyleType.CUSTOM,
-                      textColor: Appcolor.gray_95,
-                      fontSize: screenWidth(28),
+                      textColor: Appcolor.white,
+                      fontSize: Responsive.sp(0.037),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
           ),
+
           if (canEdit)
             isEditing
-                ? Row(
-                    children: [
-                      IconButton(
-                        onPressed: onSave,
-                        icon: const Icon(
-                          Icons.check_rounded,
-                          color: Appcolor.yellow_70,
-                        ),
-                        tooltip: 'Save',
-                      ),
-                    ],
+                ? IconButton(
+                    onPressed: onSave,
+                    icon: Icon(
+                      Icons.check_rounded,
+                      color: Appcolor.accent,
+                      size: Responsive.sp(0.055),
+                    ),
+                    tooltip: 'Save',
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
                   )
                 : IconButton(
                     onPressed: onStartEdit,
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.edit_rounded,
-                      color: Appcolor.yellow_70,
+                      color: Appcolor.muted,
+                      size: Responsive.sp(0.05),
                     ),
                     tooltip: 'Edit section name',
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
                   ),
-          if (canDelete)
+
+          if (canDelete) ...[
+            SizedBox(width: Responsive.wp(0.02)),
             GestureDetector(
               onTap: onDelete,
               child: Container(
-                width: screenWidth(16),
-                height: screenWidth(16),
+                width: Responsive.wp(0.075),
+                height: Responsive.wp(0.075),
+
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: Appcolor.yellow_70),
+                  color: Appcolor.bg,
+                  borderRadius: BorderRadius.circular(Responsive.wp(0.02)),
+                  border: Border.all(
+                    color: Appcolor.panelEdge,
+                    width: Responsive.wp(0.0025),
+                  ),
                 ),
-                child: const Icon(
+
+                alignment: Alignment.center,
+
+                child: Icon(
                   Icons.close_rounded,
-                  size: 18,
-                  color: Appcolor.red,
+                  size: Responsive.sp(0.04),
+                  color: Appcolor.muted,
                 ),
               ),
             ),
+          ],
         ],
       ),
     );
